@@ -23,22 +23,19 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const decreaseQuantity = useBundleStore((state) => state.decreaseQuantity);
 
-  const activeVariantId =
-    productSelection?.activeVariantId ?? product.variants?.[0]?.id;
+  const hasVariants = (product.variants?.length ?? 0) > 0;
 
-  const quantity = activeVariantId
-    ? (productSelection?.quantities[activeVariantId] ?? 0)
-    : 0;
+  const activeVariantId = hasVariants
+    ? (productSelection?.activeVariantId ?? product.variants?.[0]?.id)
+    : product.id;
+
+  const quantity = productSelection?.quantities[activeVariantId] ?? 0;
 
   const handleIncreaseQuantity = () => {
-    if (!activeVariantId) return;
-
     increaseQuantity(product.id, activeVariantId);
   };
 
   const handleDecreaseQuantity = () => {
-    if (!activeVariantId) return;
-
     decreaseQuantity(product.id, activeVariantId);
   };
 
@@ -66,9 +63,9 @@ export default function ProductCard({ product }: ProductCardProps) {
               </a>
             </p>
 
-            {product.variants?.length > 0 && (
+            {hasVariants && (
               <div className="flex flex-wrap gap-[6px]">
-                {product.variants.map((variant: ProductVariant) => {
+                {product.variants?.map((variant: ProductVariant) => {
                   const hasImageError = imageErrors[variant.id];
                   const isSelected = activeVariantId === variant.id;
 
@@ -115,13 +112,13 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <button
                   type="button"
                   onClick={handleDecreaseQuantity}
-                  disabled={!activeVariantId || quantity === 0}
+                  disabled={quantity === 0}
                   aria-label={`Decrease ${product.title} quantity`}
                   className={clsx(
                     "flex h-[20px] w-[20px] items-center justify-center rounded-[4px] border-[2px]",
                     quantity === 0
-                      ? "cursor-not-allowed bg-white border-[#E6EBF0] text-[#E6EBF0]"
-                      : "border-[#F0F4F7] cursor-pointer bg-[#F0F4F7] text-[#525963]",
+                      ? "cursor-not-allowed border-[#E6EBF0] bg-white text-[#E6EBF0]"
+                      : "cursor-pointer border-[#F0F4F7] bg-[#F0F4F7] text-[#525963]",
                   )}
                 >
                   <span className="font-gilroy-medium">−</span>
@@ -134,14 +131,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <button
                   type="button"
                   onClick={handleIncreaseQuantity}
-                  disabled={!activeVariantId}
                   aria-label={`Increase ${product.title} quantity`}
-                  className={clsx(
-                    "flex h-[20px] w-[20px] items-center justify-center rounded-[4px] border-[2px]",
-                    activeVariantId
-                      ? "border-[#F0F4F7] cursor-pointer bg-[#F0F4F7] text-[#525963]"
-                      : "cursor-not-allowed border-[#E6EBF0] bg-white text-[#E6EBF0]",
-                  )}
+                  className="flex h-[20px] w-[20px] cursor-pointer items-center justify-center rounded-[4px] border-[2px] border-[#F0F4F7] bg-[#F0F4F7] text-[#525963]"
                 >
                   <span className="font-gilroy-medium">+</span>
                 </button>

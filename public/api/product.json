@@ -67,7 +67,7 @@
         {
           "id": "wyze-cam-v3-black",
           "title": "Black",
-          "image": "/images/products/wyze-cam-v3-gray.png"
+          "image": "/images/products/wyze-cam-v3-black.png"
         }
       ]
     },
@@ -82,12 +82,12 @@
       "badge": "Save 22%",
       "variants": [
         {
-          "id": "wyze-cam-v3-white",
+          "id": "wyze-cam-floodlight-v2-white",
           "title": "White",
           "image": "/images/products/wyze-cam-floodlight-v2-white.png"
         },
         {
-          "id": "wyze-cam-v3-black",
+          "id": "wwyze-cam-floodlight-v2-black",
           "title": "Black",
           "image": "/images/products/wyze-cam-floodlight-v2-black.png"
         }

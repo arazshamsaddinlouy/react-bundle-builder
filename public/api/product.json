@@ -1,0 +1,105 @@
+{
+  "categories": [
+    {
+      "id": "choose-your-cameras",
+      "title": "Choose your cameras",
+      "icon": "/icons/choose-camera.svg"
+    },
+    {
+      "id": "choose-your-plan",
+      "title": "Choose your plan",
+      "icon": "/icons/choose-your-plan.svg"
+    },
+    {
+      "id": "choose-your-sensors",
+      "title": "Choose your sensors",
+      "icon": "/icons/choose-your-sensors.svg"
+    },
+    {
+      "id": "add-extra-protection",
+      "title": "Add extra protection",
+      "icon": "/icons/add-extra-protection.svg"
+    }
+  ],
+  "products": [
+    {
+      "id": "wyze-cam-v4",
+      "categoryId": "choose-your-cameras",
+      "title": "Wyze Cam V4",
+      "description": "The clearest Wyze Cam ever made.",
+      "price": 27.98,
+      "compareAtPrice": 34.98,
+      "image": "/images/products/wyze-cam-v4.jpg",
+      "badge": "Save 22%",
+      "variants": [
+        {
+          "id": "wyze-cam-v4-white",
+          "title": "White",
+          "image": "/images/products/wyze-cam-v4-white.png"
+        },
+        {
+          "id": "wyze-cam-v4-black",
+          "title": "Black",
+          "image": "/images/products/wyze-cam-v4-black.png"
+        },
+        {
+          "id": "wyze-cam-v4-gray",
+          "title": "Gray",
+          "image": "/images/products/wyze-cam-v4-gray.png"
+        }
+      ]
+    },
+    {
+      "id": "wyze-cam-v3",
+      "categoryId": "choose-your-cameras",
+      "title": "Wyze Cam V3",
+      "description": "360° pan and 180° tilt security camera.",
+      "price": 34.98,
+      "compareAtPrice": 39.98,
+      "image": "/images/products/wyze-cam-v3.jpg",
+      "badge": "Save 22%",
+      "variants": [
+        {
+          "id": "wyze-cam-v3-white",
+          "title": "White",
+          "image": "/images/products/wyze-cam-v3-white.png"
+        },
+        {
+          "id": "wyze-cam-v3-black",
+          "title": "Black",
+          "image": "/images/products/wyze-cam-v3-gray.png"
+        }
+      ]
+    },
+    {
+      "id": "wyze-cam-floodlight-v2",
+      "categoryId": "choose-your-cameras",
+      "title": "Wyze Cam Floodlight v2",
+      "description": "2K floodlight camera with a 160° wide-angle view for your garage.",
+      "price": 69.98,
+      "compareAtPrice": 89.98,
+      "image": "/images/products/wyze-cam-floodlight-v2.jpeg",
+      "badge": "Save 22%",
+      "variants": [
+        {
+          "id": "wyze-cam-v3-white",
+          "title": "White",
+          "image": "/images/products/wyze-cam-floodlight-v2-white.png"
+        },
+        {
+          "id": "wyze-cam-v3-black",
+          "title": "Black",
+          "image": "/images/products/wyze-cam-floodlight-v2-black.png"
+        }
+      ]
+    },
+    {
+      "id": "wyze-duo-cam-doorbell",
+      "categoryId": "choose-your-cameras",
+      "title": "Wyze Duo Cam Doorbell",
+      "description": "Two cameras. Two views. Double the porch protection.",
+      "price": 69.98,
+      "image": "/images/products/wyze-duo-cam-doorbell.png"
+    }
+  ]
+}

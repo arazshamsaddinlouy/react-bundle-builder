@@ -1,11 +1,5 @@
-function App() {
-  return (
-    <main className="min-h-screen bg-slate-100 p-10">
-      <h1 className="text-4xl font-bold text-slate-900">Bundle Builder</h1>
+import BundleBuilderPage from "@/pages/BundleBuilderPage";
 
-      <p className="mt-3 text-slate-600">Tailwind CSS is working.</p>
-    </main>
-  );
+export default function App() {
+  return <BundleBuilderPage />;
 }
-
-export default App;

@@ -24,4 +24,26 @@ export interface BundleStoreActions {
   resetBundle(): void;
 }
 
+export interface BundleSummaryItem {
+  productId: ProductKey;
+  variantId: VariantKey;
+  itemKey: BundleItemKey;
+  name: string;
+  image: string;
+  quantity: number;
+  originalPrice: number;
+  salePrice: number;
+}
+
+export interface BundleSummarySection {
+  categoryId: string;
+  categoryTitle: string;
+  items: BundleSummaryItem[];
+}
+export interface ProductVariantSelection {
+  activeVariantId: string;
+  quantities: Record<string, number>;
+}
+
+export type SelectedVariants = Record<ProductKey, ProductVariantSelection>;
 export interface BundleStore extends BundleStoreState, BundleStoreActions {}

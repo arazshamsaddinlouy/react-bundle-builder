@@ -8,4 +8,6 @@ export type {
   BundleStore,
   BundleStoreState,
   BundleStoreActions,
+  BundleSummaryItem as BundleSummaryItemType,
+  BundleSummarySection as BundleSummarySectionType,
 } from "./bundle";

@@ -1,29 +1,34 @@
 import { create } from "zustand";
 
-type ProductVariantSelection = {
-  activeVariantId: string;
-  quantities: Record<string, number>;
-};
+import type { SelectedVariants } from "@/types/bundle";
+import { DEFAULT_VARIANT_ID } from "@/utils/buildBundleSummary";
 
-type BundleStore = {
-  selectedVariants: Record<string, ProductVariantSelection>;
+interface BundleStore {
+  selectedVariants: SelectedVariants;
 
-  setSelectedVariant: (productId: string, variantId: string) => void;
+  setActiveVariant: (productId: string, variantId?: string) => void;
 
-  increaseQuantity: (productId: string, variantId: string) => void;
+  setQuantity: (productId: string, variantId: string, quantity: number) => void;
 
-  decreaseQuantity: (productId: string, variantId: string) => void;
+  incrementQuantity: (productId: string, variantId: string) => void;
 
-  resetProductSelection: (productId: string) => void;
-  resetSelectedVariants: () => void;
-};
+  decrementQuantity: (productId: string, variantId: string) => void;
+
+  removeVariant: (productId: string, variantId: string) => void;
+
+  restoreBundle: (selectedVariants: SelectedVariants) => void;
+
+  clearBundle: () => void;
+}
 
 export const useBundleStore = create<BundleStore>((set) => ({
   selectedVariants: {},
 
-  setSelectedVariant: (productId, variantId) =>
+  setActiveVariant: (productId, variantId = DEFAULT_VARIANT_ID) => {
     set((state) => {
-      const currentProductSelection = state.selectedVariants[productId];
+      const currentSelection = state.selectedVariants[productId];
+
+      const currentQuantity = currentSelection?.quantities?.[variantId] ?? 0;
 
       return {
         selectedVariants: {
@@ -31,20 +36,54 @@ export const useBundleStore = create<BundleStore>((set) => ({
           [productId]: {
             activeVariantId: variantId,
             quantities: {
-              ...currentProductSelection?.quantities,
-              [variantId]: currentProductSelection?.quantities[variantId] ?? 0,
+              ...currentSelection?.quantities,
+              [variantId]: currentQuantity > 0 ? currentQuantity : 1,
             },
           },
         },
       };
-    }),
+    });
+  },
 
-  increaseQuantity: (productId, variantId) =>
+  setQuantity: (productId, variantId, quantity) => {
     set((state) => {
-      const currentProductSelection = state.selectedVariants[productId];
+      const currentSelection = state.selectedVariants[productId];
 
-      const currentQuantity =
-        currentProductSelection?.quantities[variantId] ?? 0;
+      if (quantity <= 0) {
+        const nextQuantities = {
+          ...currentSelection?.quantities,
+        };
+
+        delete nextQuantities[variantId];
+
+        if (Object.keys(nextQuantities).length === 0) {
+          const nextSelectedVariants = {
+            ...state.selectedVariants,
+          };
+
+          delete nextSelectedVariants[productId];
+
+          return {
+            selectedVariants: nextSelectedVariants,
+          };
+        }
+
+        const nextActiveVariantId =
+          currentSelection?.activeVariantId === variantId
+            ? Object.keys(nextQuantities)[0]
+            : currentSelection?.activeVariantId;
+
+        return {
+          selectedVariants: {
+            ...state.selectedVariants,
+            [productId]: {
+              activeVariantId:
+                nextActiveVariantId ?? Object.keys(nextQuantities)[0],
+              quantities: nextQuantities,
+            },
+          },
+        };
+      }
 
       return {
         selectedVariants: {
@@ -52,55 +91,148 @@ export const useBundleStore = create<BundleStore>((set) => ({
           [productId]: {
             activeVariantId: variantId,
             quantities: {
-              ...currentProductSelection?.quantities,
+              ...currentSelection?.quantities,
+              [variantId]: quantity,
+            },
+          },
+        },
+      };
+    });
+  },
+
+  incrementQuantity: (productId, variantId) => {
+    set((state) => {
+      const currentSelection = state.selectedVariants[productId];
+
+      const currentQuantity = currentSelection?.quantities?.[variantId] ?? 0;
+
+      return {
+        selectedVariants: {
+          ...state.selectedVariants,
+          [productId]: {
+            activeVariantId: variantId,
+            quantities: {
+              ...currentSelection?.quantities,
               [variantId]: currentQuantity + 1,
             },
           },
         },
       };
-    }),
+    });
+  },
 
-  decreaseQuantity: (productId, variantId) =>
+  decrementQuantity: (productId, variantId) => {
     set((state) => {
-      const currentProductSelection = state.selectedVariants[productId];
+      const currentSelection = state.selectedVariants[productId];
 
-      if (!currentProductSelection) {
+      if (!currentSelection) {
         return state;
       }
 
-      const currentQuantity =
-        currentProductSelection.quantities[variantId] ?? 0;
+      const currentQuantity = currentSelection.quantities?.[variantId] ?? 0;
+
+      if (currentQuantity <= 1) {
+        const nextQuantities = {
+          ...currentSelection.quantities,
+        };
+
+        delete nextQuantities[variantId];
+
+        if (Object.keys(nextQuantities).length === 0) {
+          const nextSelectedVariants = {
+            ...state.selectedVariants,
+          };
+
+          delete nextSelectedVariants[productId];
+
+          return {
+            selectedVariants: nextSelectedVariants,
+          };
+        }
+
+        const nextActiveVariantId =
+          currentSelection.activeVariantId === variantId
+            ? Object.keys(nextQuantities)[0]
+            : currentSelection.activeVariantId;
+
+        return {
+          selectedVariants: {
+            ...state.selectedVariants,
+            [productId]: {
+              activeVariantId: nextActiveVariantId,
+              quantities: nextQuantities,
+            },
+          },
+        };
+      }
 
       return {
         selectedVariants: {
           ...state.selectedVariants,
           [productId]: {
-            ...currentProductSelection,
-            activeVariantId: variantId,
+            ...currentSelection,
             quantities: {
-              ...currentProductSelection.quantities,
-              [variantId]: Math.max(0, currentQuantity - 1),
+              ...currentSelection.quantities,
+              [variantId]: currentQuantity - 1,
             },
           },
         },
       };
-    }),
+    });
+  },
 
-  resetProductSelection: (productId) =>
+  removeVariant: (productId, variantId) => {
     set((state) => {
-      const selectedVariants = {
-        ...state.selectedVariants,
+      const currentSelection = state.selectedVariants[productId];
+
+      if (!currentSelection) {
+        return state;
+      }
+
+      const nextQuantities = {
+        ...currentSelection.quantities,
       };
 
-      delete selectedVariants[productId];
+      delete nextQuantities[variantId];
+
+      if (Object.keys(nextQuantities).length === 0) {
+        const nextSelectedVariants = {
+          ...state.selectedVariants,
+        };
+
+        delete nextSelectedVariants[productId];
+
+        return {
+          selectedVariants: nextSelectedVariants,
+        };
+      }
+
+      const nextActiveVariantId =
+        currentSelection.activeVariantId === variantId
+          ? Object.keys(nextQuantities)[0]
+          : currentSelection.activeVariantId;
 
       return {
-        selectedVariants,
+        selectedVariants: {
+          ...state.selectedVariants,
+          [productId]: {
+            activeVariantId: nextActiveVariantId,
+            quantities: nextQuantities,
+          },
+        },
       };
-    }),
+    });
+  },
 
-  resetSelectedVariants: () =>
+  restoreBundle: (selectedVariants) => {
+    set({
+      selectedVariants,
+    });
+  },
+
+  clearBundle: () => {
     set({
       selectedVariants: {},
-    }),
+    });
+  },
 }));

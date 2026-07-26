@@ -53,14 +53,13 @@ export default function BundleBuilderPage() {
 
   return (
     <main className="min-h-screen">
-      <div className="mx-auto flex max-w-[1228px] items-start gap-[29px] px-4 py-[49px]">
+      <div className="mx-auto flex max-w-[1228px] flex-col gap-[29px] px-4 py-[49px] min-[1228px]:flex-row min-[1228px]:items-start">
         <div className="min-w-0 flex-1">
           <ProductSelector
             categories={data.categories}
             products={data.products}
           />
         </div>
-
         <div className="w-full max-w-[380px] shrink-0">
           <BundleSummary
             categories={data.categories}

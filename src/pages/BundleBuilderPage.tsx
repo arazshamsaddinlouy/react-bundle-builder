@@ -60,7 +60,7 @@ export default function BundleBuilderPage() {
             products={data.products}
           />
         </div>
-        <div className="w-full max-w-[380px] shrink-0">
+        <div className="w-full min-[1228px]:max-w-[380px] min-[1228px]:shrink-0">
           <BundleSummary
             categories={data.categories}
             products={data.products}

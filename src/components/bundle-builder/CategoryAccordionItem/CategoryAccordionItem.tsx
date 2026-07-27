@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import ProductList from "./ProductList";
+import ProductList from "@/components/bundle-builder/ProductList/ProductList";
 
 import { useBundleStore } from "@/store/useBundleStore";
 import type { Category } from "@/types/category";

@@ -1,8 +1,8 @@
 import type { BundleSummaryItem, BundleVariantKey } from "@/types/bundle";
 import type { ProductKey } from "@/types/product";
 
-import ItemPrice from "./ItemPrice";
-import QuantitySelector from "./QuantitySelector";
+import ItemPrice from "@/components/bundle-summary/ItemPrice/ItemPrice";
+import QuantitySelector from "@/components/bundle-summary/QuantitySelector/QuantitySelector";
 
 interface BundleItemProps {
   item: BundleSummaryItem;

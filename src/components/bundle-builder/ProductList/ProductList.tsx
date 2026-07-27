@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 import type { Product } from "@/types/product";
 
-import ProductCard from "./ProductCard";
+import ProductCard from "@/components/bundle-builder/ProductCard/ProductCard";
 
 interface ProductListProps {
   products: Product[];

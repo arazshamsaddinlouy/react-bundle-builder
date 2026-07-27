@@ -1,4 +1,4 @@
-import BundleItem from "./BundleItem";
+import BundleItem from "@/components/bundle-summary/BundleItem/BundleItem";
 
 import type { BundleSummarySection, BundleVariantKey } from "@/types/bundle";
 import type { ProductKey } from "@/types/product";

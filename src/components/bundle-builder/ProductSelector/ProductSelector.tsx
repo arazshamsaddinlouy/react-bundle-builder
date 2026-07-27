@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { Category } from "@/types/category";
 import type { Product } from "@/types/product";
 
-import CategoryAccordion from "./CategoryAccordion";
+import CategoryAccordion from "../CategoryAccordion/CategoryAccordion";
 
 interface ProductSelectorProps {
   products: Product[];

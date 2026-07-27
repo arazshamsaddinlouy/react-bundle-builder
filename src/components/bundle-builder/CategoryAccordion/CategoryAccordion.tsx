@@ -1,7 +1,7 @@
 import type { Category, CategoryKey } from "@/types/category";
 import type { Product } from "@/types/product";
 
-import CategoryAccordionItem from "./CategoryAccordionItem";
+import CategoryAccordionItem from "@/components/bundle-builder/CategoryAccordionItem/CategoryAccordionItem";
 
 interface CategoryAccordionProps {
   categories: Category[];

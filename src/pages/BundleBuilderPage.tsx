@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 
-import ProductSelector from "@/components/bundle-builder/ProductSelector";
-import BundleSummary from "@/components/bundle-summary/BundleSummary";
+import ProductSelector from "@/components/bundle-builder/ProductSelector/ProductSelector";
+import BundleSummary from "@/components/bundle-summary/BundleSummary/BundleSummary";
 import { useBundleBuilderData } from "@/hooks/useBundleBuilderData";
 import { useBundleStore } from "@/store/useBundleStore";
 import { getSavedBundleFromStorage } from "@/services/bundleStorageService";

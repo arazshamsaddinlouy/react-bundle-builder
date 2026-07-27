@@ -7,10 +7,10 @@ import { buildBundleSummary } from "@/utils/buildBundleSummary";
 import { useBundleStore } from "@/store/useBundleStore";
 import { saveBundleToStorage } from "@/services/bundleStorageService";
 
-import BundleSection from "./BundleSection";
-import BundleSummaryFooter from "./BundleSummaryFooter";
-import BundleSummaryHeader from "./BundleSummaryHeader";
-import ShippingRow from "./ShippingRow";
+import BundleSection from "@/components/bundle-summary/BundleSection/BundleSection";
+import BundleSummaryFooter from "@/components/bundle-summary/BundleSummaryFooter/BundleSummaryFooter";
+import BundleSummaryHeader from "@/components/bundle-summary/BundleSummaryHeader/BundleSummaryHeader";
+import ShippingRow from "@/components/bundle-summary/ShippingRow/ShippingRow";
 import { calculateBundleTotals } from "@/utils/calculateBundleTotals";
 
 interface BundleSummaryProps {

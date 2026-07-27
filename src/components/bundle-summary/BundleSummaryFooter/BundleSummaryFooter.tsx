@@ -3,8 +3,8 @@ import { toast } from "sonner";
 import { useBundleStore } from "@/store/useBundleStore";
 import { formatCurrency } from "@/utils/formatCurrency";
 
-import BundleOffer from "./BundleOffer";
-import ShippingRow from "./ShippingRow";
+import BundleOffer from "@/components/bundle-summary/BundleOffer/BundleOffer";
+import ShippingRow from "@/components/bundle-summary/ShippingRow/ShippingRow";
 
 interface BundleSummaryFooterProps {
   shippingPrice: number;

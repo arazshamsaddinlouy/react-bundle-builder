@@ -1,4 +1,4 @@
-import BundlePricing from "./BundlePricing";
+import BundlePricing from "@/components/bundle-summary/BundlePricing/BundlePricing";
 
 interface BundleOfferProps {
   originalPrice: number;

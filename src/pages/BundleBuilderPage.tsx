@@ -53,6 +53,9 @@ export default function BundleBuilderPage() {
 
   return (
     <main className="min-h-screen">
+      <div className="font-gilroy-bold pt-[20px] mb-[-25px] min-[768px]:hidden text-[31.88px] leading-[110%] tracking-[-0.06px] text-center text-[#1F1F1F]">
+        Let’s get started!
+      </div>
       <div className="mx-auto flex max-w-[1228px] flex-col gap-[29px] px-4 py-[49px] min-[1228px]:flex-row min-[1228px]:items-start">
         <div className="min-w-0 flex-1">
           <ProductSelector

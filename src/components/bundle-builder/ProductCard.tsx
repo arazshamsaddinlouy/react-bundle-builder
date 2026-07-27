@@ -18,13 +18,10 @@ export default function ProductCard({ product }: ProductCardProps) {
   );
 
   const setSelectedVariant = useBundleStore((state) => state.setActiveVariant);
-
   const incrementQuantity = useBundleStore((state) => state.incrementQuantity);
-
   const decrementQuantity = useBundleStore((state) => state.decrementQuantity);
 
   const hasVariants = Boolean(product.variants?.length);
-
   const firstVariantId = product.variants?.[0]?.id;
 
   const activeVariantId: string = hasVariants
@@ -50,21 +47,21 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <article
       className={clsx(
-        "relative h-full rounded-xl border-[2px] bg-white p-[11px] transition-colors",
+        "relative h-full overflow-hidden rounded-xl border-[2px] bg-white p-[11px] transition-colors",
         isProductSelected ? "border-[rgba(78,47,210,0.7)]" : "border-white",
       )}
     >
-      <div className="flex gap-4">
-        <div className="flex h-[137px] w-[101px] items-center justify-center">
+      <div className="flex h-full flex-col gap-4 min-[1228px]:flex-row">
+        <div className="flex h-[180px] w-full shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#F7F7F7] min-[1228px]:h-[137px] min-[1228px]:w-[101px] min-[1228px]:rounded-none min-[1228px]:bg-transparent">
           <img
             src={product.image}
             alt={product.title}
-            className="h-24 w-24 rounded-lg object-cover"
+            className="h-full w-full object-cover min-[1228px]:h-24 min-[1228px]:w-24 min-[1228px]:rounded-lg"
           />
         </div>
 
         <div className="min-w-0 flex-1">
-          <div className="flex flex-col items-start justify-between gap-[8px]">
+          <div className="flex h-full flex-col items-start justify-between gap-[8px]">
             <h3 className="font-gilroy-semibold text-[16px] leading-none tracking-[0.6px] text-[#1F1F1F]">
               {product.title}
             </h3>
@@ -89,7 +86,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                       onClick={() => setSelectedVariant(product.id, variant.id)}
                       aria-pressed={isSelected}
                       className={clsx(
-                        "flex h-[26px] cursor-pointer min-w-[65px] items-center justify-center gap-[2px] rounded-[2px] border bg-[rgba(29,240,187,0.04)] px-[3px] transition-colors",
+                        "flex h-[26px] min-w-[65px] cursor-pointer items-center justify-center gap-[2px] rounded-[2px] border bg-[rgba(29,240,187,0.04)] px-[3px] transition-colors",
                         isSelected ? "border-[#0AA288]" : "border-[#CCCCCC]",
                       )}
                     >
@@ -120,7 +117,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               </div>
             )}
 
-            <div className="flex w-full items-center justify-between">
+            <div className="mt-auto flex w-full items-center justify-between pt-[4px]">
               <div className="flex items-center gap-[10px]">
                 <button
                   type="button"
@@ -151,7 +148,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </button>
               </div>
 
-              <div className="flex flex-col items-center leading-[20px]">
+              <div className="flex flex-row items-center gap-[6px] leading-[20px] min-[1228px]:flex-col min-[1228px]:items-end min-[1228px]:gap-0">
                 {product.compareAtPrice &&
                   product.compareAtPrice > product.price && (
                     <span className="text-[16px] text-[#D8392B] line-through">
@@ -159,7 +156,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     </span>
                   )}
 
-                <span className="text-[#575757]">
+                <span className="text-[#575757] text-[16px]">
                   ${product.price.toFixed(2)}
                 </span>
               </div>

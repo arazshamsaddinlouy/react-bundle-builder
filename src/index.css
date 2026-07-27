@@ -18,8 +18,18 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "gilroy-bold";
+  src: url("/fonts/gilroy-bold.ttf") format("truetype");
+  font-display: swap;
+}
+
 body {
   font-family: "gilroy", sans-serif;
+}
+
+.font-gilroy-bold {
+  font-family: "gilroy-bold";
 }
 
 .font-gilroy-semibold {

@@ -1,4 +1,9 @@
-export { BundleSummary } from "./BundleSummary";
-export { BundleSummarySection } from "./BundleSummarySection";
-export { BundleSummaryItem } from "./BundleSummaryItem";
-export { QuantityControl } from "./QuantityControl";
+export { default as BundleSummary } from "./BundleSummary";
+export { default as BundleSummaryHeader } from "./BundleSummaryHeader";
+export { default as BundleSummaryFooter } from "./BundleSummaryFooter";
+export { default as BundleSummarySection } from "./BundleSection";
+export { default as BundleSummaryItem } from "./BundleItem";
+export { default as BundlePricing } from "./BundlePricing";
+export { default as ShippingRow } from "./ShippingRow";
+export { default as BundleOffer } from "./BundleOffer";
+export { default as QuantityControl } from "./QuantityControl";

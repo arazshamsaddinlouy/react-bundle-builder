@@ -1,4 +1,4 @@
-import type { BundleBuilderData } from "@/types/bundle-builder";
+import type { BundleBuilderData } from "@/types/builder";
 import { API } from "./config";
 
 export async function getBundleBuilderData(): Promise<BundleBuilderData> {

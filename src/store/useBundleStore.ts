@@ -5,8 +5,13 @@ import type { BundleStore, SelectedVariants } from "@/types/bundle";
 
 import { removeVariantFromSelection } from "./bundleStore.utils";
 
-const normalizeQuantity = (quantity: number): number =>
-  Math.max(0, Math.floor(quantity));
+const normalizeQuantity = (quantity: number): number => {
+  if (!Number.isFinite(quantity)) {
+    return 0;
+  }
+
+  return Math.max(0, Math.floor(quantity));
+};
 
 const cloneSelectedVariants = (
   selectedVariants: SelectedVariants,

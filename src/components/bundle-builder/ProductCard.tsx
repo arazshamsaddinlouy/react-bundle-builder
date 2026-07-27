@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useBundleStore } from "@/store/useBundleStore";
 import type { ProductVariant } from "@/types";
 import type { Product } from "@/types/product";
-import { DEFAULT_VARIANT_ID } from "@/utils/buildBundleSummary";
+import { DEFAULT_VARIANT_ID } from "@/constants/bundle";
 
 interface ProductCardProps {
   product: Product;

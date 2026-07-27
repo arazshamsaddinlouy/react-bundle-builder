@@ -1,36 +1,45 @@
-import type { SelectedVariants } from "@/types/bundle";
+import type { BundleVariantKey, SelectedVariants } from "@/types/bundle";
+import type { ProductKey } from "@/types/product";
 
 export function removeVariantFromSelection(
   selectedVariants: SelectedVariants,
-  productId: string,
-  variantId: string,
+  productId: ProductKey,
+  variantId: BundleVariantKey,
 ): SelectedVariants {
-  const productSelection = selectedVariants[productId];
+  const currentSelection = selectedVariants[productId];
 
-  if (!productSelection) {
+  if (!currentSelection) {
     return selectedVariants;
   }
 
-  const nextQuantities = { ...productSelection.quantities };
+  const nextQuantities = {
+    ...currentSelection.quantities,
+  };
 
   delete nextQuantities[variantId];
 
-  const nextSelectedVariants = { ...selectedVariants };
-  const remainingVariantIds = Object.keys(nextQuantities);
+  const remainingVariantIds = Object.keys(nextQuantities) as BundleVariantKey[];
 
   if (remainingVariantIds.length === 0) {
+    const nextSelectedVariants = {
+      ...selectedVariants,
+    };
+
     delete nextSelectedVariants[productId];
 
     return nextSelectedVariants;
   }
 
-  nextSelectedVariants[productId] = {
-    activeVariantId:
-      productSelection.activeVariantId === variantId
-        ? remainingVariantIds[0]
-        : productSelection.activeVariantId,
-    quantities: nextQuantities,
-  };
+  const nextActiveVariantId =
+    currentSelection.activeVariantId === variantId
+      ? remainingVariantIds[0]
+      : currentSelection.activeVariantId;
 
-  return nextSelectedVariants;
+  return {
+    ...selectedVariants,
+    [productId]: {
+      activeVariantId: nextActiveVariantId,
+      quantities: nextQuantities,
+    },
+  };
 }

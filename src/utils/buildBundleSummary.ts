@@ -1,8 +1,11 @@
-import type { BundleSummarySection, SelectedVariants } from "@/types/bundle";
+import { DEFAULT_VARIANT_ID } from "@/constants/bundle";
+import type {
+  BundleSummaryItem,
+  BundleSummarySection,
+  SelectedVariants,
+} from "@/types/bundle";
 import type { Category } from "@/types/category";
 import type { Product } from "@/types/product";
-
-export const DEFAULT_VARIANT_ID = "__default__";
 
 export function buildBundleSummary(
   categories: Category[],
@@ -15,7 +18,7 @@ export function buildBundleSummary(
         (product) => product.categoryId === category.id,
       );
 
-      const items = categoryProducts.flatMap((product) => {
+      const items = categoryProducts.flatMap((product): BundleSummaryItem[] => {
         const productSelection = selectedVariants[product.id];
 
         if (!productSelection) {
@@ -26,8 +29,8 @@ export function buildBundleSummary(
           Array.isArray(product.variants) && product.variants.length > 0;
 
         if (hasVariants) {
-          return product.variants.flatMap((variant) => {
-            const quantity = productSelection.quantities?.[variant.id] ?? 0;
+          return product.variants.flatMap((variant): BundleSummaryItem[] => {
+            const quantity = productSelection.quantities[variant.id] ?? 0;
 
             if (quantity <= 0) {
               return [];
@@ -51,10 +54,12 @@ export function buildBundleSummary(
           });
         }
 
+        const quantities = productSelection.quantities;
+
         const defaultQuantity =
-          productSelection.quantities?.[DEFAULT_VARIANT_ID] ??
-          productSelection.quantities?.[productSelection.activeVariantId] ??
-          Object.values(productSelection.quantities ?? {})[0] ??
+          quantities[DEFAULT_VARIANT_ID] ??
+          quantities[productSelection.activeVariantId] ??
+          Object.values(quantities)[0] ??
           0;
 
         if (defaultQuantity <= 0) {

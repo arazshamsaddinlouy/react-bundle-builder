@@ -3,9 +3,9 @@ import type { DefaultVariantId } from "@/constants/bundle";
 import type { ProductKey } from "./product";
 import type { VariantKey } from "./variant";
 
-export type BundleVariantKey = VariantKey | DefaultVariantId;
-
 export type BundleItemKey = string;
+
+export type BundleVariantKey = VariantKey | DefaultVariantId;
 
 export interface BundleItem {
   productId: ProductKey;

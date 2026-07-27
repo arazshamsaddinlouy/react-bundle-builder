@@ -1,8 +1,8 @@
 import type { DefaultVariantId } from "@/constants/bundle";
 
+import type { CategoryKey } from "./category";
 import type { ProductKey } from "./product";
 import type { VariantKey } from "./variant";
-import type { CategoryKey } from "./category";
 
 export type BundleVariantKey = VariantKey | DefaultVariantId;
 
@@ -42,6 +42,14 @@ export interface BundleSummaryItem {
   quantity: number;
   originalPrice: number;
   salePrice: number;
+  supportsQuantity: boolean;
+  canIncrement: boolean;
+  canDecrement: boolean;
+  dependency?: {
+    required: boolean;
+    sourceProductId?: ProductKey;
+    label?: string;
+  };
 }
 
 export interface BundleSummarySection {

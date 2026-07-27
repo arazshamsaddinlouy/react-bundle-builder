@@ -15,6 +15,9 @@ describe("calculateBundleTotals", () => {
     quantity: 1,
     originalPrice: 120,
     salePrice: 100,
+    supportsQuantity: true,
+    canIncrement: true,
+    canDecrement: true,
     ...overrides,
   });
 

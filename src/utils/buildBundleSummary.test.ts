@@ -55,6 +55,10 @@ describe("buildBundleSummary", () => {
             quantity: 2,
             originalPrice: 120,
             salePrice: 100,
+            supportsQuantity: true,
+            canIncrement: true,
+            canDecrement: true,
+            dependency: undefined,
           },
         ],
       },
@@ -109,6 +113,10 @@ describe("buildBundleSummary", () => {
             quantity: 3,
             originalPrice: 115,
             salePrice: 95,
+            supportsQuantity: true,
+            canIncrement: true,
+            canDecrement: true,
+            dependency: undefined,
           },
         ],
       },
@@ -202,6 +210,10 @@ describe("buildBundleSummary", () => {
       quantity: 1,
       originalPrice: 130,
       salePrice: 100,
+      supportsQuantity: true,
+      canIncrement: true,
+      canDecrement: true,
+      dependency: undefined,
     });
   });
 

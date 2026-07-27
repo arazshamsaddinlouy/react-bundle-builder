@@ -38,10 +38,10 @@ describe("ShippingRow", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("renders $0.00 when shipping price is zero", () => {
+  it("renders FREE when shipping price is zero", () => {
     render(<ShippingRow shippingPrice={0} />);
 
-    expect(screen.getByText("$0.00")).toBeInTheDocument();
+    expect(screen.getByText("FREE")).toBeInTheDocument();
   });
 
   it("renders the mobile layout by default", () => {
@@ -50,7 +50,6 @@ describe("ShippingRow", () => {
     );
 
     expect(container.firstChild).toHaveClass("flex");
-
     expect(container.firstChild).toHaveClass("min-[1228px]:hidden");
   });
 
@@ -60,7 +59,6 @@ describe("ShippingRow", () => {
     );
 
     expect(container.firstChild).toHaveClass("hidden");
-
     expect(container.firstChild).toHaveClass("min-[1228px]:flex");
   });
 
@@ -68,7 +66,6 @@ describe("ShippingRow", () => {
     const { container } = render(<ShippingRow shippingPrice={5.99} />);
 
     expect(container.firstChild).toHaveClass("hidden");
-
     expect(container.firstChild).toHaveClass("min-[1228px]:flex");
   });
 

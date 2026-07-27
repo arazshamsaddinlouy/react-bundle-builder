@@ -17,6 +17,8 @@ describe("QuantitySelector", () => {
       <QuantitySelector
         quantity={3}
         itemName="Indoor Camera"
+        canIncrement
+        canDecrement
         onIncrement={onIncrement}
         onDecrement={onDecrement}
       />,
@@ -30,6 +32,8 @@ describe("QuantitySelector", () => {
       <QuantitySelector
         quantity={1}
         itemName="Indoor Camera"
+        canIncrement
+        canDecrement
         onIncrement={onIncrement}
         onDecrement={onDecrement}
       />,
@@ -55,6 +59,8 @@ describe("QuantitySelector", () => {
       <QuantitySelector
         quantity={2}
         itemName="Indoor Camera"
+        canIncrement
+        canDecrement
         onIncrement={onIncrement}
         onDecrement={onDecrement}
       />,
@@ -76,6 +82,8 @@ describe("QuantitySelector", () => {
       <QuantitySelector
         quantity={2}
         itemName="Indoor Camera"
+        canIncrement
+        canDecrement
         onIncrement={onIncrement}
         onDecrement={onDecrement}
       />,
@@ -90,11 +98,13 @@ describe("QuantitySelector", () => {
     expect(onDecrement).toHaveBeenCalledOnce();
   });
 
-  it("disables the decrease button when quantity is zero", () => {
+  it("disables the decrease button when canDecrement is false", () => {
     render(
       <QuantitySelector
         quantity={0}
         itemName="Indoor Camera"
+        canIncrement
+        canDecrement={false}
         onIncrement={onIncrement}
         onDecrement={onDecrement}
       />,
@@ -107,11 +117,13 @@ describe("QuantitySelector", () => {
     ).toBeDisabled();
   });
 
-  it("enables the decrease button when quantity is greater than zero", () => {
+  it("enables the decrease button when canDecrement is true", () => {
     render(
       <QuantitySelector
         quantity={1}
         itemName="Indoor Camera"
+        canIncrement
+        canDecrement
         onIncrement={onIncrement}
         onDecrement={onDecrement}
       />,
@@ -124,6 +136,44 @@ describe("QuantitySelector", () => {
     ).toBeEnabled();
   });
 
+  it("disables the increase button when canIncrement is false", () => {
+    render(
+      <QuantitySelector
+        quantity={5}
+        itemName="Indoor Camera"
+        canIncrement={false}
+        canDecrement
+        onIncrement={onIncrement}
+        onDecrement={onDecrement}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", {
+        name: "Increase Indoor Camera quantity",
+      }),
+    ).toBeDisabled();
+  });
+
+  it("enables the increase button when canIncrement is true", () => {
+    render(
+      <QuantitySelector
+        quantity={5}
+        itemName="Indoor Camera"
+        canIncrement
+        canDecrement
+        onIncrement={onIncrement}
+        onDecrement={onDecrement}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", {
+        name: "Increase Indoor Camera quantity",
+      }),
+    ).toBeEnabled();
+  });
+
   it("does not call onDecrement when the decrease button is disabled", async () => {
     const user = userEvent.setup();
 
@@ -131,6 +181,8 @@ describe("QuantitySelector", () => {
       <QuantitySelector
         quantity={0}
         itemName="Indoor Camera"
+        canIncrement
+        canDecrement={false}
         onIncrement={onIncrement}
         onDecrement={onDecrement}
       />,
@@ -143,5 +195,28 @@ describe("QuantitySelector", () => {
     );
 
     expect(onDecrement).not.toHaveBeenCalled();
+  });
+
+  it("does not call onIncrement when the increase button is disabled", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <QuantitySelector
+        quantity={5}
+        itemName="Indoor Camera"
+        canIncrement={false}
+        canDecrement
+        onIncrement={onIncrement}
+        onDecrement={onDecrement}
+      />,
+    );
+
+    await user.click(
+      screen.getByRole("button", {
+        name: "Increase Indoor Camera quantity",
+      }),
+    );
+
+    expect(onIncrement).not.toHaveBeenCalled();
   });
 });

@@ -7,12 +7,6 @@
       "summaryTitle": "cameras"
     },
     {
-      "id": "choose-your-plan",
-      "title": "Choose your plan",
-      "icon": "/icons/choose-your-plan.svg",
-      "summaryTitle": "plan"
-    },
-    {
       "id": "choose-your-sensors",
       "title": "Choose your sensors",
       "icon": "/icons/choose-your-sensors.svg",
@@ -23,16 +17,22 @@
       "title": "Add extra protection",
       "icon": "/icons/add-extra-protection.svg",
       "summaryTitle": "accessories"
+    },
+    {
+      "id": "choose-your-plan",
+      "title": "Choose your plan",
+      "icon": "/icons/choose-your-plan.svg",
+      "summaryTitle": "plan"
     }
   ],
   "products": [
     {
       "id": "wyze-cam-v4",
       "categoryId": "choose-your-cameras",
-      "title": "Wyze Cam V4",
+      "title": "Wyze Cam v4",
       "description": "The clearest Wyze Cam ever made.",
       "price": 27.98,
-      "compareAtPrice": 34.98,
+      "compareAtPrice": 35.98,
       "image": "/images/products/wyze-cam-v4.jpg",
       "badge": "Save 22%",
       "variants": [
@@ -54,22 +54,22 @@
       ]
     },
     {
-      "id": "wyze-cam-v3",
+      "id": "wyze-cam-pan-v3",
       "categoryId": "choose-your-cameras",
-      "title": "Wyze Cam V3",
+      "title": "Wyze Cam Pan v3",
       "description": "360° pan and 180° tilt security camera.",
-      "price": 34.98,
-      "compareAtPrice": 39.98,
+      "price": 23.99,
+      "compareAtPrice": 28.99,
       "image": "/images/products/wyze-cam-v3.jpg",
-      "badge": "Save 22%",
+      "badge": "Save 17%",
       "variants": [
         {
-          "id": "wyze-cam-v3-white",
+          "id": "wyze-cam-pan-v3-white",
           "title": "White",
           "image": "/images/products/wyze-cam-v3-white.png"
         },
         {
-          "id": "wyze-cam-v3-black",
+          "id": "wyze-cam-pan-v3-black",
           "title": "Black",
           "image": "/images/products/wyze-cam-v3-black.png"
         }
@@ -126,13 +126,27 @@
       ]
     },
     {
+      "id": "cam-unlimited",
+      "categoryId": "choose-your-plan",
+      "title": "Cam Unlimited",
+      "description": "Unlimited event video recording and smart detections for all compatible cameras.",
+      "price": 9.99,
+      "compareAtPrice": 12.99,
+      "image": "/images/products/cam-plus-monthly.jpeg",
+      "badge": "Most popular",
+      "billingPeriod": "month",
+      "supportsQuantity": false,
+      "selectionMode": "single"
+    },
+    {
       "id": "wyze-cam-plus-monthly",
       "categoryId": "choose-your-plan",
       "title": "Cam Plus Monthly",
       "description": "Unlimited event video recording, smart detections, and faster notifications.",
       "price": 2.99,
       "image": "/images/products/cam-plus-monthly.jpeg",
-      "badge": "Most popular"
+      "supportsQuantity": false,
+      "selectionMode": "single"
     },
     {
       "id": "wyze-cam-plus-annual",
@@ -142,7 +156,9 @@
       "price": 19.99,
       "compareAtPrice": 35.88,
       "image": "/images/products/cam-plus-annual.jpeg",
-      "badge": "Save 44%"
+      "badge": "Save 44%",
+      "supportsQuantity": false,
+      "selectionMode": "single"
     },
     {
       "id": "wyze-home-monitoring",
@@ -165,23 +181,67 @@
           "compareAtPrice": 119.88,
           "image": "/images/products/home-monitoring-annual.png"
         }
-      ]
+      ],
+      "supportsQuantity": false,
+      "selectionMode": "single"
     },
     {
       "id": "wyze-door-window-sensor",
       "categoryId": "choose-your-sensors",
-      "title": "Door and Window Sensor",
+      "title": "Wyze Sense Entry Sensor",
       "description": "Know when doors, windows, cabinets, or safes are opened or closed.",
       "price": 19.98,
-      "image": "/images/products/door-window-sensor.png"
+      "image": "/images/products/door-window-sensor.png",
+      "supportsQuantity": true,
+      "dependencies": [
+        {
+          "productId": "wyze-sense-hub",
+          "type": "required",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "locked": true,
+          "label": "Required"
+        }
+      ]
     },
     {
-      "id": "wyze-motion-sensor",
+      "id": "wyze-sense-motion-sensor",
       "categoryId": "choose-your-sensors",
-      "title": "Motion Sensor",
+      "title": "Wyze Sense Motion Sensor",
       "description": "Detect movement throughout your home and trigger smart automations.",
-      "price": 14.98,
-      "image": "/images/products/motion-sensor.jpeg"
+      "price": 29.99,
+      "image": "/images/products/motion-sensor.jpeg",
+      "supportsQuantity": true,
+      "dependencies": [
+        {
+          "productId": "wyze-sense-hub",
+          "type": "required",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "locked": true,
+          "label": "Required"
+        }
+      ]
+    },
+    {
+      "id": "wyze-sense-hub",
+      "categoryId": "choose-your-sensors",
+      "title": "Wyze Sense Hub",
+      "description": "Connects compatible Wyze Sense devices to your security system.",
+      "price": 0,
+      "compareAtPrice": 29.92,
+      "image": "/images/products/wyze-sense-hub.png",
+      "badge": "Included",
+      "supportsQuantity": true,
+      "isDependencyOnly": true,
+      "quantityRules": {
+        "min": 0,
+        "max": 1
+      }
     },
     {
       "id": "wyze-climate-sensor",
@@ -206,6 +266,19 @@
           "compareAtPrice": 74.94,
           "image": "/images/products/climate-sensor-three-pack.jpeg"
         }
+      ],
+      "supportsQuantity": true,
+      "dependencies": [
+        {
+          "productId": "wyze-sense-hub",
+          "type": "required",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "locked": true,
+          "label": "Required"
+        }
       ]
     },
     {
@@ -214,7 +287,20 @@
       "title": "Leak Sensor",
       "description": "Get notified quickly when water is detected near appliances or pipes.",
       "price": 19.98,
-      "image": "/images/products/leak-sensor.jpeg"
+      "image": "/images/products/leak-sensor.jpeg",
+      "supportsQuantity": true,
+      "dependencies": [
+        {
+          "productId": "wyze-sense-hub",
+          "type": "required",
+          "quantity": {
+            "mode": "fixed",
+            "value": 1
+          },
+          "locked": true,
+          "label": "Required"
+        }
+      ]
     },
     {
       "id": "wyze-solar-panel",
@@ -254,21 +340,27 @@
       "variants": [
         {
           "id": "wyze-micro-sd-card-32gb",
-          "title": "32 GB",
+          "title": "32GB",
           "price": 14.98,
           "image": "/images/products/wyze-micro-sd-card-32gb.jpeg"
         },
         {
           "id": "wyze-micro-sd-card-64gb",
-          "title": "64 GB",
+          "title": "64GB",
           "price": 19.98,
           "image": "/images/products/wyze-micro-sd-card-64gb.jpeg"
         },
         {
           "id": "wyze-micro-sd-card-128gb",
-          "title": "128 GB",
+          "title": "128GB",
           "price": 29.98,
           "image": "/images/products/wyze-micro-sd-card-128gb.jpeg"
+        },
+        {
+          "id": "wyze-micro-sd-card-256gb",
+          "title": "256GB",
+          "price": 20.98,
+          "image": "/images/products/wyze-micro-sd-card.jpeg"
         }
       ]
     },
@@ -290,9 +382,54 @@
           "id": "power-extension-cable-20ft",
           "title": "20 ft",
           "price": 14.98,
-          "image": "/images/products/power-extension-cable-20ft.png"
+          "image": "/images/products/power-extension-cable.jpeg"
         }
       ]
     }
-  ]
+  ],
+  "initialSelections": [
+    {
+      "productId": "wyze-cam-v4",
+      "variantId": "wyze-cam-v4-white",
+      "quantity": 1
+    },
+    {
+      "productId": "wyze-cam-pan-v3",
+      "variantId": "wyze-cam-pan-v3-white",
+      "quantity": 2
+    },
+    {
+      "productId": "wyze-sense-motion-sensor",
+      "quantity": 2
+    },
+    {
+      "productId": "wyze-sense-hub",
+      "quantity": 1
+    },
+    {
+      "productId": "wyze-micro-sd-card",
+      "variantId": "wyze-micro-sd-card-256gb",
+      "quantity": 2
+    },
+    {
+      "productId": "cam-unlimited",
+      "quantity": 1
+    }
+  ],
+  "summary": {
+    "shipping": {
+      "title": "Fast Shipping",
+      "price": 0,
+      "compareAtPrice": 5.99,
+      "image": "/icons/shipping-delivery.svg"
+    },
+    "financing": {
+      "installmentCount": 9,
+      "label": "as low as"
+    },
+    "guarantee": {
+      "title": "100% Wyze satisfaction guarantee",
+      "image": "/icons/satisfaction-guarantee.svg"
+    }
+  }
 }

@@ -6,12 +6,14 @@ import QuantitySelector from "@/components/bundle-summary/QuantitySelector/Quant
 
 interface BundleItemProps {
   item: BundleSummaryItem;
+  showQuantitySelector: boolean;
   onIncrement: (productId: ProductKey, variantId: BundleVariantKey) => void;
   onDecrement: (productId: ProductKey, variantId: BundleVariantKey) => void;
 }
 
 export default function BundleItem({
   item,
+  showQuantitySelector,
   onIncrement,
   onDecrement,
 }: BundleItemProps) {
@@ -29,18 +31,25 @@ export default function BundleItem({
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="font-gilroy-medium text-[14px] leading-[16px] tracking-[0.005em] text-[#0B0D10] break-words">
+        <p className="break-words font-gilroy-medium text-[14px] leading-[16px] tracking-[0.005em] text-[#0B0D10]">
           {item.name}
+          {item.dependency?.required && (
+            <span className="ml-1">(Required)</span>
+          )}
         </p>
       </div>
 
       <div className="flex shrink-0 items-center gap-[8px]">
-        <QuantitySelector
-          quantity={item.quantity}
-          itemName={item.name}
-          onIncrement={() => onIncrement(item.productId, item.variantId)}
-          onDecrement={() => onDecrement(item.productId, item.variantId)}
-        />
+        {showQuantitySelector && (
+          <QuantitySelector
+            quantity={item.quantity}
+            itemName={item.name}
+            canIncrement={item.canIncrement}
+            canDecrement={item.canDecrement}
+            onIncrement={() => onIncrement(item.productId, item.variantId)}
+            onDecrement={() => onDecrement(item.productId, item.variantId)}
+          />
+        )}
 
         <ItemPrice originalPrice={originalTotal} salePrice={saleTotal} />
       </div>

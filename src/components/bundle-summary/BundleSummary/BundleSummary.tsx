@@ -1,34 +1,35 @@
 import { useMemo } from "react";
 import { toast } from "sonner";
 
+import { saveBundleToStorage } from "@/services/bundleStorageService";
+import { useBundleStore } from "@/store/useBundleStore";
+import type { BundleSummaryData } from "@/types/builder";
 import type { Category } from "@/types/category";
 import type { Product } from "@/types/product";
 import { buildBundleSummary } from "@/utils/buildBundleSummary";
-import { useBundleStore } from "@/store/useBundleStore";
-import { saveBundleToStorage } from "@/services/bundleStorageService";
+import { calculateBundleTotals } from "@/utils/calculateBundleTotals";
 
 import BundleSection from "@/components/bundle-summary/BundleSection/BundleSection";
 import BundleSummaryFooter from "@/components/bundle-summary/BundleSummaryFooter/BundleSummaryFooter";
 import BundleSummaryHeader from "@/components/bundle-summary/BundleSummaryHeader/BundleSummaryHeader";
 import ShippingRow from "@/components/bundle-summary/ShippingRow/ShippingRow";
-import { calculateBundleTotals } from "@/utils/calculateBundleTotals";
 
 interface BundleSummaryProps {
   categories: Category[];
   products: Product[];
-  shippingPrice?: number;
-  installmentMonths?: number;
+  summary: BundleSummaryData;
   onCheckout?: () => void;
 }
 
 export default function BundleSummary({
   categories,
   products,
-  shippingPrice = 5.99,
-  installmentMonths = 12,
+  summary,
 }: BundleSummaryProps) {
   const selectedVariants = useBundleStore((state) => state.selectedVariants);
+
   const incrementQuantity = useBundleStore((state) => state.incrementQuantity);
+
   const decrementQuantity = useBundleStore((state) => state.decrementQuantity);
 
   const sections = useMemo(
@@ -38,7 +39,11 @@ export default function BundleSummary({
 
   const totals = useMemo(() => calculateBundleTotals(sections), [sections]);
 
+  const shippingPrice = summary.shipping.price;
+  const installmentMonths = summary.financing.installmentCount;
+
   const savings = Math.max(0, totals.originalPrice - totals.salePrice);
+
   const hasDiscount = savings > 0;
   const finalPrice = totals.salePrice;
 
@@ -96,6 +101,7 @@ export default function BundleSummary({
 
             <ShippingRow shippingPrice={shippingPrice} variant="mobile" />
           </div>
+
           <BundleSummaryFooter
             shippingPrice={shippingPrice}
             installmentMonths={installmentMonths}

@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import BundleSummary from "./BundleSummary";
 
+import type { BundleSummaryData } from "@/types/builder";
 import type { BundleSummarySection, BundleVariantKey } from "@/types/bundle";
 import type { Category } from "@/types/category";
 import type { Product, ProductKey } from "@/types/product";
@@ -186,6 +187,23 @@ describe("BundleSummary", () => {
     },
   ] as Product[];
 
+  const summaryMock: BundleSummaryData = {
+    shipping: {
+      title: "Shipping",
+      price: 5.99,
+      compareAtPrice: 9.99,
+      image: "/images/shipping.png",
+    },
+    financing: {
+      installmentCount: 12,
+      label: "or",
+    },
+    guarantee: {
+      title: "Money-back guarantee",
+      image: "/images/guarantee.png",
+    },
+  };
+
   const sections = [
     {
       categoryId: "cameras",
@@ -205,6 +223,15 @@ describe("BundleSummary", () => {
     },
   ] as BundleSummarySection[];
 
+  const renderBundleSummary = (summary: BundleSummaryData = summaryMock) =>
+    render(
+      <BundleSummary
+        categories={categories}
+        products={products}
+        summary={summary}
+      />,
+    );
+
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -220,13 +247,13 @@ describe("BundleSummary", () => {
   });
 
   it("renders the summary header", () => {
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     expect(screen.getByTestId("bundle-summary-header")).toBeInTheDocument();
   });
 
   it("builds summary sections from categories, products, and selected variants", () => {
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     expect(buildBundleSummaryMock).toHaveBeenCalledWith(
       categories,
@@ -236,13 +263,13 @@ describe("BundleSummary", () => {
   });
 
   it("calculates totals from the generated sections", () => {
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     expect(calculateBundleTotalsMock).toHaveBeenCalledWith(sections);
   });
 
   it("renders one BundleSection for each generated section", () => {
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     expect(screen.getByTestId("bundle-section-cameras")).toBeInTheDocument();
 
@@ -252,7 +279,7 @@ describe("BundleSummary", () => {
   it("passes the store increment callback to BundleSection", async () => {
     const user = userEvent.setup();
 
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     await user.click(
       screen.getByRole("button", {
@@ -271,7 +298,7 @@ describe("BundleSummary", () => {
   it("passes the store decrement callback to BundleSection", async () => {
     const user = userEvent.setup();
 
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     await user.click(
       screen.getByRole("button", {
@@ -288,25 +315,33 @@ describe("BundleSummary", () => {
   });
 
   it("passes the default shipping price to ShippingRow", () => {
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     expect(screen.getByTestId("shipping-row-mobile")).toHaveTextContent("5.99");
   });
 
   it("passes a custom shipping price to ShippingRow", () => {
-    render(
-      <BundleSummary
-        categories={categories}
-        products={products}
-        shippingPrice={9.99}
-      />,
-    );
+    renderBundleSummary({
+      ...summaryMock,
+      shipping: {
+        ...summaryMock.shipping,
+        price: 9.99,
+      },
+    });
 
     expect(screen.getByTestId("shipping-row-mobile")).toHaveTextContent("9.99");
   });
 
+  it("passes the shipping price to BundleSummaryFooter", () => {
+    renderBundleSummary();
+
+    expect(screen.getByTestId("footer-shipping-price")).toHaveTextContent(
+      "5.99",
+    );
+  });
+
   it("passes calculated pricing values to BundleSummaryFooter", () => {
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     expect(screen.getByTestId("footer-original-price")).toHaveTextContent(
       "240",
@@ -320,13 +355,13 @@ describe("BundleSummary", () => {
   });
 
   it("calculates the monthly price using the installment months", () => {
-    render(
-      <BundleSummary
-        categories={categories}
-        products={products}
-        installmentMonths={12}
-      />,
-    );
+    renderBundleSummary({
+      ...summaryMock,
+      financing: {
+        ...summaryMock.financing,
+        installmentCount: 12,
+      },
+    });
 
     expect(screen.getByTestId("footer-monthly-price")).toHaveTextContent("15");
 
@@ -336,13 +371,13 @@ describe("BundleSummary", () => {
   });
 
   it("uses the final price as monthly price when installment months is zero", () => {
-    render(
-      <BundleSummary
-        categories={categories}
-        products={products}
-        installmentMonths={0}
-      />,
-    );
+    renderBundleSummary({
+      ...summaryMock,
+      financing: {
+        ...summaryMock.financing,
+        installmentCount: 0,
+      },
+    });
 
     expect(screen.getByTestId("footer-monthly-price")).toHaveTextContent("180");
   });
@@ -354,7 +389,7 @@ describe("BundleSummary", () => {
       itemsCount: 2,
     });
 
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     expect(screen.getByTestId("footer-savings")).toHaveTextContent("0");
 
@@ -372,7 +407,7 @@ describe("BundleSummary", () => {
       itemsCount: 0,
     });
 
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     expect(
       screen.getByText("No products have been added yet."),
@@ -394,7 +429,7 @@ describe("BundleSummary", () => {
       itemsCount: 0,
     });
 
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     await user.click(
       screen.getByRole("button", {
@@ -414,7 +449,7 @@ describe("BundleSummary", () => {
 
     saveBundleToStorageMock.mockReturnValue(false);
 
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     await user.click(
       screen.getByRole("button", {
@@ -434,7 +469,7 @@ describe("BundleSummary", () => {
   it("saves the selected variants and shows a success toast", async () => {
     const user = userEvent.setup();
 
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     await user.click(
       screen.getByRole("button", {
@@ -457,7 +492,7 @@ describe("BundleSummary", () => {
   it("saves a valid ISO timestamp", async () => {
     const user = userEvent.setup();
 
-    render(<BundleSummary categories={categories} products={products} />);
+    renderBundleSummary();
 
     await user.click(
       screen.getByRole("button", {

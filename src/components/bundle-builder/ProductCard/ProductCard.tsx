@@ -56,6 +56,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleDecreaseQuantity = () => {
     decrementQuantity(product.id, activeVariantId);
   };
+
+  const supportsQuantity = product.supportsQuantity !== false;
+
   return (
     <article
       className={clsx(
@@ -130,35 +133,52 @@ export default function ProductCard({ product }: ProductCardProps) {
             )}
 
             <div className="mt-auto flex w-full items-center justify-between pt-[4px]">
-              <div className="flex items-center gap-[10px]">
-                <button
-                  type="button"
-                  onClick={handleDecreaseQuantity}
-                  disabled={quantity === 0}
-                  aria-label={`Decrease ${product.title} quantity`}
-                  className={clsx(
-                    "flex h-[20px] w-[20px] items-center justify-center rounded-[4px] border-[2px]",
-                    quantity === 0
-                      ? "cursor-not-allowed border-[#E6EBF0] bg-white text-[#E6EBF0]"
-                      : "cursor-pointer border-[#F0F4F7] bg-[#F0F4F7] text-[#525963]",
-                  )}
-                >
-                  <span className="font-gilroy-medium">−</span>
-                </button>
+              {supportsQuantity ? (
+                <div className="flex items-center gap-[10px]">
+                  <button
+                    type="button"
+                    onClick={handleDecreaseQuantity}
+                    disabled={quantity === 0}
+                    aria-label={`Decrease ${product.title} quantity`}
+                    className={clsx(
+                      "flex h-[20px] w-[20px] items-center justify-center rounded-[4px] border-[2px] transition-colors",
+                      quantity === 0
+                        ? "cursor-not-allowed border-[#E6EBF0] bg-[#ECEFF3] text-[#A5ADB7]"
+                        : "cursor-pointer border-[#F0F4F7] bg-[#F0F4F7] text-[#525963]",
+                    )}
+                  >
+                    <span className="font-gilroy-medium">−</span>
+                  </button>
 
-                <div className="min-w-[16px] text-center font-gilroy-medium text-[16px] leading-[20px] text-[#0B0D10]">
-                  {quantity}
+                  <div className="min-w-[16px] text-center font-gilroy-medium text-[16px] leading-[20px] text-[#0B0D10]">
+                    {quantity}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleIncreaseQuantity}
+                    aria-label={`Increase ${product.title} quantity`}
+                    className="flex h-[20px] w-[20px] cursor-pointer items-center justify-center rounded-[4px] border-[2px] border-[#F0F4F7] bg-[#F0F4F7] text-[#525963] transition-colors hover:bg-[#E6EBF0]"
+                  >
+                    <span className="font-gilroy-medium">+</span>
+                  </button>
                 </div>
-
+              ) : (
                 <button
                   type="button"
                   onClick={handleIncreaseQuantity}
-                  aria-label={`Increase ${product.title} quantity`}
-                  className="flex h-[20px] w-[20px] cursor-pointer items-center justify-center rounded-[4px] border-[2px] border-[#F0F4F7] bg-[#F0F4F7] text-[#525963]"
+                  disabled={isProductSelected}
+                  aria-label={`Add ${product.title} to bundle`}
+                  className={clsx(
+                    "flex min-h-[28px] items-center justify-center rounded-[6px] px-[14px] font-gilroy-medium text-[12px] transition-colors",
+                    isProductSelected
+                      ? "cursor-not-allowed bg-[#ECEFF3] text-[#A5ADB7]"
+                      : "cursor-pointer bg-[#4E2FD2] text-white hover:bg-[#4024BA]",
+                  )}
                 >
-                  <span className="font-gilroy-medium">+</span>
+                  {isProductSelected ? "Added ✓" : "Add"}
                 </button>
-              </div>
+              )}
 
               <div className="flex flex-row items-center gap-[6px] leading-[20px] min-[1228px]:flex-col min-[1228px]:items-end min-[1228px]:gap-0">
                 {displayedCompareAtPrice &&

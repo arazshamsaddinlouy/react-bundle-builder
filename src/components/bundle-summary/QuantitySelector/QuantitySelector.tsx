@@ -1,6 +1,10 @@
+import clsx from "clsx";
+
 interface QuantitySelectorProps {
   quantity: number;
   itemName: string;
+  canIncrement: boolean;
+  canDecrement: boolean;
   onIncrement: () => void;
   onDecrement: () => void;
 }
@@ -8,17 +12,27 @@ interface QuantitySelectorProps {
 export default function QuantitySelector({
   quantity,
   itemName,
+  canIncrement,
+  canDecrement,
   onIncrement,
   onDecrement,
 }: QuantitySelectorProps) {
+  const buttonClass = (enabled: boolean) =>
+    clsx(
+      "flex size-[20px] items-center justify-center rounded-[4px] font-gilroy-medium text-[14px] leading-[14px] transition-colors",
+      enabled
+        ? "cursor-pointer bg-white text-[#575757] hover:bg-[#F7F8FA]"
+        : "cursor-not-allowed border border-[#CED6DE] bg-[#F1F1F2] text-[#A5ADB7]",
+    );
+
   return (
     <div className="flex items-center gap-[4px]">
       <button
         type="button"
-        disabled={quantity === 0}
+        disabled={!canDecrement}
         aria-label={`Decrease ${itemName} quantity`}
         onClick={onDecrement}
-        className="flex size-[20px] cursor-pointer items-center justify-center rounded-[4px] bg-white font-gilroy-medium text-[14px] leading-[14px] text-[#575757] transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
+        className={buttonClass(canDecrement)}
       >
         −
       </button>
@@ -29,9 +43,10 @@ export default function QuantitySelector({
 
       <button
         type="button"
+        disabled={!canIncrement}
         aria-label={`Increase ${itemName} quantity`}
         onClick={onIncrement}
-        className="flex size-[20px] cursor-pointer items-center justify-center rounded-[4px] bg-white font-gilroy-medium text-[14px] leading-[14px] text-[#575757] transition-opacity hover:opacity-80"
+        className={buttonClass(canIncrement)}
       >
         +
       </button>

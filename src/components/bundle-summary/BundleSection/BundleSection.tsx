@@ -25,6 +25,7 @@ export default function BundleSection({
           <BundleItem
             key={item.itemKey}
             item={item}
+            showQuantitySelector={item.supportsQuantity}
             onIncrement={onIncrement}
             onDecrement={onDecrement}
           />

@@ -7,6 +7,43 @@ import type {
 import type { Category } from "@/types/category";
 import type { Product } from "@/types/product";
 
+const FALLBACK_PRODUCT_IMAGE = "/images/products/product-placeholder.png";
+
+function getQuantityControls(
+  product: Product,
+  quantity: number,
+  isRequiredDependency: boolean,
+) {
+  if (isRequiredDependency) {
+    return {
+      canIncrement: false,
+      canDecrement: false,
+    };
+  }
+
+  const minQuantity = product.quantityRules?.min ?? 0;
+  const maxQuantity = product.quantityRules?.max;
+
+  return {
+    canIncrement:
+      product.supportsQuantity !== false &&
+      (maxQuantity === undefined || quantity < maxQuantity),
+
+    canDecrement: product.supportsQuantity !== false && quantity > minQuantity,
+  };
+}
+
+function getDependencyInfo(product: Product) {
+  if (!product.isDependencyOnly) {
+    return undefined;
+  }
+
+  return {
+    required: true,
+    label: "Required",
+  };
+}
+
 export function buildBundleSummary(
   categories: Category[],
   products: Product[],
@@ -25,11 +62,13 @@ export function buildBundleSummary(
           return [];
         }
 
-        const hasVariants =
-          Array.isArray(product.variants) && product.variants.length > 0;
+        const variants = product.variants ?? [];
+        const supportsQuantity = product.supportsQuantity !== false;
+        const isRequiredDependency = product.isDependencyOnly === true;
+        const dependency = getDependencyInfo(product);
 
-        if (hasVariants) {
-          return product.variants.flatMap((variant): BundleSummaryItem[] => {
+        if (variants.length > 0) {
+          return variants.flatMap((variant): BundleSummaryItem[] => {
             const quantity = productSelection.quantities[variant.id] ?? 0;
 
             if (quantity <= 0) {
@@ -38,17 +77,27 @@ export function buildBundleSummary(
 
             const salePrice = variant.price ?? product.price;
 
+            const { canIncrement, canDecrement } = getQuantityControls(
+              product,
+              quantity,
+              isRequiredDependency,
+            );
+
             return [
               {
                 productId: product.id,
                 variantId: variant.id,
                 itemKey: `${product.id}:${variant.id}`,
                 name: `${product.title} - ${variant.title}`,
-                image: variant.image ?? product.image,
+                image: variant.image ?? product.image ?? FALLBACK_PRODUCT_IMAGE,
                 quantity,
                 originalPrice:
                   variant.compareAtPrice ?? product.compareAtPrice ?? salePrice,
                 salePrice,
+                supportsQuantity,
+                canIncrement,
+                canDecrement,
+                dependency,
               },
             ];
           });
@@ -66,16 +115,26 @@ export function buildBundleSummary(
           return [];
         }
 
+        const { canIncrement, canDecrement } = getQuantityControls(
+          product,
+          defaultQuantity,
+          isRequiredDependency,
+        );
+
         return [
           {
             productId: product.id,
             variantId: DEFAULT_VARIANT_ID,
             itemKey: `${product.id}:${DEFAULT_VARIANT_ID}`,
             name: product.title,
-            image: product.image,
+            image: product.image ?? FALLBACK_PRODUCT_IMAGE,
             quantity: defaultQuantity,
             originalPrice: product.compareAtPrice ?? product.price,
             salePrice: product.price,
+            supportsQuantity,
+            canIncrement,
+            canDecrement,
+            dependency,
           },
         ];
       });

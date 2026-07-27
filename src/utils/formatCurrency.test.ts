@@ -7,7 +7,7 @@ describe("formatCurrency", () => {
     expect(formatCurrency(399)).toBe("$399.00");
   });
 
-  it("formats zero as USD currency", () => {
-    expect(formatCurrency(0)).toBe("$0.00");
+  it("formats zero as FREE", () => {
+    expect(formatCurrency(0)).toBe("FREE");
   });
 });

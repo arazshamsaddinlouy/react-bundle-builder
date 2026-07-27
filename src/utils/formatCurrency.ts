@@ -6,4 +6,4 @@ export const currencyFormatter = new Intl.NumberFormat("en-US", {
 });
 
 export const formatCurrency = (value: number): string =>
-  currencyFormatter.format(value);
+  value === 0 ? "FREE" : currencyFormatter.format(value);

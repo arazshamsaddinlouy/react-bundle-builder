@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import type { Category } from "@/types/category";
 import type { Product } from "@/types/product";
@@ -16,18 +16,20 @@ export default function ProductSelector({
 }: ProductSelectorProps) {
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!activeCategoryId && categories.length > 0) {
-      setActiveCategoryId(categories[0].id);
-    }
-  }, [activeCategoryId, categories]);
+  const hasActiveCategory = categories.some(
+    (category) => category.id === activeCategoryId,
+  );
+
+  const selectedCategoryId = hasActiveCategory
+    ? activeCategoryId
+    : (categories[0]?.id ?? null);
 
   return (
     <section className="flex-1">
       <CategoryAccordion
         categories={categories}
         products={products}
-        activeCategoryId={activeCategoryId}
+        activeCategoryId={selectedCategoryId}
         onCategoryChange={setActiveCategoryId}
       />
     </section>

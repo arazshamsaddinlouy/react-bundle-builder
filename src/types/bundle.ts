@@ -1,32 +1,54 @@
+import type { DefaultVariantId } from "@/constants/bundle";
+
 import type { ProductKey } from "./product";
 import type { VariantKey } from "./variant";
+
+export type BundleVariantKey = VariantKey | DefaultVariantId;
 
 export type BundleItemKey = string;
 
 export interface BundleItem {
   productId: ProductKey;
-  variantId?: VariantKey;
+  variantId?: BundleVariantKey;
   quantity: number;
 }
 
+export interface ProductVariantSelection {
+  activeVariantId: BundleVariantKey;
+  quantities: Record<BundleVariantKey, number>;
+}
+
+export type SelectedVariants = Record<ProductKey, ProductVariantSelection>;
+
 export interface BundleStoreState {
-  activeStep: number;
-  activeVariants: Record<ProductKey, VariantKey>;
-  quantities: Record<BundleItemKey, number>;
+  selectedVariants: SelectedVariants;
 }
 
 export interface BundleStoreActions {
-  setActiveStep(step: number): void;
-  setActiveVariant(productId: ProductKey, variantId: VariantKey): void;
-  setQuantity(itemKey: BundleItemKey, quantity: number): void;
-  incrementQuantity(itemKey: BundleItemKey): void;
-  decrementQuantity(itemKey: BundleItemKey): void;
-  resetBundle(): void;
+  setActiveVariant(productId: ProductKey, variantId?: BundleVariantKey): void;
+
+  setQuantity(
+    productId: ProductKey,
+    variantId: BundleVariantKey,
+    quantity: number,
+  ): void;
+
+  incrementQuantity(productId: ProductKey, variantId: BundleVariantKey): void;
+
+  decrementQuantity(productId: ProductKey, variantId: BundleVariantKey): void;
+
+  removeVariant(productId: ProductKey, variantId: BundleVariantKey): void;
+
+  restoreBundle(selectedVariants: SelectedVariants): void;
+
+  clearBundle(): void;
 }
+
+export interface BundleStore extends BundleStoreState, BundleStoreActions {}
 
 export interface BundleSummaryItem {
   productId: ProductKey;
-  variantId: VariantKey;
+  variantId: BundleVariantKey;
   itemKey: BundleItemKey;
   name: string;
   image: string;
@@ -40,10 +62,3 @@ export interface BundleSummarySection {
   categoryTitle: string;
   items: BundleSummaryItem[];
 }
-export interface ProductVariantSelection {
-  activeVariantId: string;
-  quantities: Record<string, number>;
-}
-
-export type SelectedVariants = Record<ProductKey, ProductVariantSelection>;
-export interface BundleStore extends BundleStoreState, BundleStoreActions {}

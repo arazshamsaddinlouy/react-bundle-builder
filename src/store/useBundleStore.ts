@@ -1,48 +1,38 @@
 import { create } from "zustand";
 
 import { DEFAULT_VARIANT_ID } from "@/constants/bundle";
-import type { BundleStore, SelectedVariants } from "@/types/bundle";
+import type {
+  BundleStore,
+  BundleVariantKey,
+  SelectedVariants,
+} from "@/types/bundle";
+import type { ProductKey } from "@/types/product";
 
-import { removeVariantFromSelection } from "./bundleStore.utils";
-
-const normalizeQuantity = (quantity: number): number => {
-  if (!Number.isFinite(quantity)) {
-    return 0;
-  }
-
-  return Math.max(0, Math.floor(quantity));
-};
-
-const cloneSelectedVariants = (
-  selectedVariants: SelectedVariants,
-): SelectedVariants =>
-  Object.fromEntries(
-    Object.entries(selectedVariants).map(([productId, selection]) => [
-      productId,
-      {
-        activeVariantId: selection.activeVariantId,
-        quantities: {
-          ...selection.quantities,
-        },
-      },
-    ]),
-  ) as SelectedVariants;
+import {
+  cloneSelectedVariants,
+  removeVariantFromSelection,
+} from "./bundleStore.utils";
+import { SAVED_BUNDLE_STORAGE_KEY } from "@/services/bundleStorageService";
 
 export const useBundleStore = create<BundleStore>((set) => ({
   selectedVariants: {},
 
-  setActiveVariant: (productId, variantId = DEFAULT_VARIANT_ID) => {
+  setActiveVariant: (
+    productId: ProductKey,
+    variantId: BundleVariantKey = DEFAULT_VARIANT_ID,
+  ) => {
     set((state) => {
       const currentSelection = state.selectedVariants[productId];
 
       return {
         selectedVariants: {
           ...state.selectedVariants,
+
           [productId]: {
             activeVariantId: variantId,
+
             quantities: {
               ...currentSelection?.quantities,
-              [variantId]: currentSelection?.quantities[variantId] ?? 1,
             },
           },
         },
@@ -50,41 +40,9 @@ export const useBundleStore = create<BundleStore>((set) => ({
     });
   },
 
-  setQuantity: (productId, variantId, quantity) => {
-    const normalizedQuantity = normalizeQuantity(quantity);
-
-    set((state) => {
-      if (normalizedQuantity === 0) {
-        return {
-          selectedVariants: removeVariantFromSelection(
-            state.selectedVariants,
-            productId,
-            variantId,
-          ),
-        };
-      }
-
-      const currentSelection = state.selectedVariants[productId];
-
-      return {
-        selectedVariants: {
-          ...state.selectedVariants,
-          [productId]: {
-            activeVariantId: currentSelection?.activeVariantId ?? variantId,
-            quantities: {
-              ...currentSelection?.quantities,
-              [variantId]: normalizedQuantity,
-            },
-          },
-        },
-      };
-    });
-  },
-
-  incrementQuantity: (productId, variantId) => {
+  incrementQuantity: (productId: ProductKey, variantId: BundleVariantKey) => {
     set((state) => {
       const currentSelection = state.selectedVariants[productId];
-
       const currentQuantity = currentSelection?.quantities[variantId] ?? 0;
 
       return {
@@ -102,11 +60,15 @@ export const useBundleStore = create<BundleStore>((set) => ({
     });
   },
 
-  decrementQuantity: (productId, variantId) => {
+  decrementQuantity: (productId: ProductKey, variantId: BundleVariantKey) => {
     set((state) => {
       const currentSelection = state.selectedVariants[productId];
 
-      const currentQuantity = currentSelection?.quantities[variantId] ?? 0;
+      if (!currentSelection) {
+        return state;
+      }
+
+      const currentQuantity = currentSelection.quantities[variantId] ?? 0;
 
       if (currentQuantity <= 1) {
         return {
@@ -122,7 +84,7 @@ export const useBundleStore = create<BundleStore>((set) => ({
         selectedVariants: {
           ...state.selectedVariants,
           [productId]: {
-            ...currentSelection,
+            activeVariantId: currentSelection.activeVariantId,
             quantities: {
               ...currentSelection.quantities,
               [variantId]: currentQuantity - 1,
@@ -133,23 +95,14 @@ export const useBundleStore = create<BundleStore>((set) => ({
     });
   },
 
-  removeVariant: (productId, variantId) => {
-    set((state) => ({
-      selectedVariants: removeVariantFromSelection(
-        state.selectedVariants,
-        productId,
-        variantId,
-      ),
-    }));
-  },
-
-  restoreBundle: (selectedVariants) => {
+  restoreBundle: (selectedVariants: SelectedVariants) => {
     set({
       selectedVariants: cloneSelectedVariants(selectedVariants),
     });
   },
 
   clearBundle: () => {
+    localStorage.removeItem(SAVED_BUNDLE_STORAGE_KEY);
     set({
       selectedVariants: {},
     });

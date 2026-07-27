@@ -1,4 +1,8 @@
-import { formatCurrency } from "../../utils/formatCurrency";
+import { toast } from "sonner";
+
+import { useBundleStore } from "@/store/useBundleStore";
+import { formatCurrency } from "@/utils/formatCurrency";
+
 import BundleOffer from "./BundleOffer";
 import ShippingRow from "./ShippingRow";
 
@@ -10,7 +14,6 @@ interface BundleSummaryFooterProps {
   monthlyPrice: number;
   savings: number;
   hasDiscount: boolean;
-  onCheckout: () => void;
   onSave: () => void;
 }
 
@@ -22,11 +25,24 @@ export default function BundleSummaryFooter({
   monthlyPrice,
   savings,
   hasDiscount,
-  onCheckout,
   onSave,
 }: BundleSummaryFooterProps) {
+  const clearBundle = useBundleStore((state) => state.clearBundle);
+
+  const handleCheckout = () => {
+    toast.success("Your security system is ready", {
+      description: `Checkout is not included in this prototype. Total: ${formatCurrency(
+        finalPrice,
+      )}`,
+      action: {
+        label: "Start over",
+        onClick: clearBundle,
+      },
+    });
+  };
+
   return (
-    <footer className="-mt-[60px] max-[768px]:mt-[20px] flex-1 min-[1228px]:mt-0 min-[1228px]:border-t min-[1228px]:border-[#CED6DE]">
+    <footer className="-mt-[60px] flex-1 max-[768px]:mt-[20px] min-[1228px]:mt-0 min-[1228px]:border-t min-[1228px]:border-[#CED6DE]">
       <ShippingRow shippingPrice={shippingPrice} variant="desktop" />
 
       <BundleOffer
@@ -46,7 +62,7 @@ export default function BundleSummaryFooter({
 
       <button
         type="button"
-        onClick={onCheckout}
+        onClick={handleCheckout}
         className="mt-[15px] flex h-[48px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[4px] bg-[#4E2FD2] px-[16px] font-gilroy-semibold text-[17px] leading-[22px] text-white transition-opacity hover:opacity-90"
       >
         Checkout

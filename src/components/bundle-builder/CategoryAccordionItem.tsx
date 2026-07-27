@@ -114,17 +114,17 @@ export default function CategoryAccordionItem({
           >
             <ProductList products={products} />
 
-            <div className="mt-[16px] flex justify-center">
-              <button
-                type="button"
-                onClick={onNext}
-                className="flex h-[39px] items-center justify-center gap-[10px] rounded-[7px] border border-[#4E2FD2] px-[24px] py-[5px] font-gilroy-semibold text-[#4E2FD2] transition-colors hover:bg-[#4E2FD2] hover:text-white"
-              >
-                {isLastStep
-                  ? "Complete bundle"
-                  : `Next: ${nextStepTitle ?? "Continue"}`}
-              </button>
-            </div>
+            {!isLastStep && (
+              <div className="mt-[16px] flex justify-center">
+                <button
+                  type="button"
+                  onClick={onNext}
+                  className="flex h-[39px] items-center justify-center gap-[10px] rounded-[7px] border border-[#4E2FD2] px-[24px] py-[5px] font-gilroy-semibold text-[#4E2FD2] transition-colors hover:bg-[#4E2FD2] hover:text-white"
+                >
+                  Next: {nextStepTitle ?? "Continue"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -2,13 +2,13 @@ import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 
 import ProductSelector from "@/components/bundle-builder/ProductSelector";
-import { BundleSummary } from "@/components/bundle-summary";
-import { useProducts } from "@/hooks/use-product";
+import BundleSummary from "@/components/bundle-summary/BundleSummary";
+import { useBundleBuilderData } from "@/hooks/useBundleBuilderData";
 import { useBundleStore } from "@/store/useBundleStore";
-import { getSavedBundleFromStorage } from "@/constants/bundleStorage";
+import { getSavedBundleFromStorage } from "@/services/bundleStorageService";
 
 export default function BundleBuilderPage() {
-  const { data, isLoading, error } = useProducts();
+  const { data, isLoading, error } = useBundleBuilderData();
 
   const hasRestoredBundle = useRef(false);
 
@@ -29,7 +29,9 @@ export default function BundleBuilderPage() {
 
     const hasSavedProducts = Object.values(savedBundle.selectedVariants).some(
       (selection) =>
-        Object.values(selection.quantities).some((quantity) => quantity > 0),
+        Object.values(selection?.quantities ?? {}).some(
+          (quantity) => quantity > 0,
+        ),
     );
 
     if (!hasSavedProducts) {

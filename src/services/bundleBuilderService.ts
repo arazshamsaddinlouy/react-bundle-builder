@@ -1,8 +1,9 @@
+import { API_ENDPOINTS } from "../constants/api";
+
 import type { BundleBuilderData } from "@/types/builder";
-import { API } from "./config";
 
 export async function getBundleBuilderData(): Promise<BundleBuilderData> {
-  const response = await fetch(API.PRODUCTS);
+  const response = await fetch(API_ENDPOINTS.BUNDLE_BUILDER);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch bundle builder data: ${response.status}`);

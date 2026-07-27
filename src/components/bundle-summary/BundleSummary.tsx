@@ -5,13 +5,13 @@ import type { Category } from "@/types/category";
 import type { Product } from "@/types/product";
 import { buildBundleSummary } from "@/utils/buildBundleSummary";
 import { useBundleStore } from "@/store/useBundleStore";
-import { saveBundleToStorage } from "@/constants/bundleStorage";
+import { saveBundleToStorage } from "@/services/bundleStorageService";
 
 import BundleSection from "./BundleSection";
 import BundleSummaryFooter from "./BundleSummaryFooter";
 import BundleSummaryHeader from "./BundleSummaryHeader";
 import ShippingRow from "./ShippingRow";
-import { calculateBundleTotals } from "../../utils/formatCurrency";
+import { calculateBundleTotals } from "@/utils/calculateBundleTotals";
 
 interface BundleSummaryProps {
   categories: Category[];
@@ -26,7 +26,6 @@ export default function BundleSummary({
   products,
   shippingPrice = 5.99,
   installmentMonths = 12,
-  onCheckout,
 }: BundleSummaryProps) {
   const selectedVariants = useBundleStore((state) => state.selectedVariants);
   const incrementQuantity = useBundleStore((state) => state.incrementQuantity);
@@ -111,7 +110,6 @@ export default function BundleSummary({
             monthlyPrice={monthlyPrice}
             savings={savings}
             hasDiscount={hasDiscount}
-            onCheckout={() => onCheckout?.()}
             onSave={handleSaveBundle}
           />
         </div>

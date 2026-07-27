@@ -1,10 +1,11 @@
 import { useState } from "react";
 import clsx from "clsx";
 
-import { useBundleStore } from "@/store/useBundleStore";
-import type { ProductVariant } from "@/types";
-import type { Product } from "@/types/product";
 import { DEFAULT_VARIANT_ID } from "@/constants/bundle";
+import { useBundleStore } from "@/store/useBundleStore";
+import type { Product } from "@/types/product";
+import type { ProductVariant } from "@/types/variant";
+import type { BundleVariantKey } from "@/types/bundle";
 
 interface ProductCardProps {
   product: Product;
@@ -24,7 +25,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const hasVariants = Boolean(product.variants?.length);
   const firstVariantId = product.variants?.[0]?.id;
 
-  const activeVariantId: string = hasVariants
+  const activeVariantId: BundleVariantKey = hasVariants
     ? (productSelection?.activeVariantId ??
       firstVariantId ??
       DEFAULT_VARIANT_ID)
@@ -68,9 +69,9 @@ export default function ProductCard({ product }: ProductCardProps) {
 
             <p className="font-gilroy-medium text-[12px] leading-[130%] tracking-[0.6px] text-[#1F1F1F]/75">
               {product.description}{" "}
-              <a href="/" className="text-[rgba(0,0,238,1)] underline">
+              <span className="text-[rgba(0,0,238,1)] underline">
                 Learn More
-              </a>
+              </span>
             </p>
 
             {hasVariants && (

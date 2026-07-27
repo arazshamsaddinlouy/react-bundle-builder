@@ -1,4 +1,4 @@
-import type { Category } from "@/types/category";
+import type { Category, CategoryKey } from "@/types/category";
 import type { Product } from "@/types/product";
 
 import CategoryAccordionItem from "./CategoryAccordionItem";
@@ -6,8 +6,8 @@ import CategoryAccordionItem from "./CategoryAccordionItem";
 interface CategoryAccordionProps {
   categories: Category[];
   products: Product[];
-  activeCategoryId: string | null;
-  onCategoryChange: (categoryId: string | null) => void;
+  activeCategoryId: CategoryKey | null;
+  onCategoryChange: (categoryId: CategoryKey | null) => void;
 }
 
 export default function CategoryAccordion({

@@ -50,11 +50,3 @@ export const getSavedBundleFromStorage = (): SavedBundle | null => {
     return null;
   }
 };
-
-export const removeSavedBundleFromStorage = () => {
-  try {
-    localStorage.removeItem(SAVED_BUNDLE_STORAGE_KEY);
-  } catch (error) {
-    console.error("Failed to remove saved bundle:", error);
-  }
-};

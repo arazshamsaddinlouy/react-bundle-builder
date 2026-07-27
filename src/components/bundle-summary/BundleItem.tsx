@@ -1,19 +1,13 @@
-import QuantitySelector from "./QuantityControl";
+import type { BundleSummaryItem, BundleVariantKey } from "@/types/bundle";
+import type { ProductKey } from "@/types/product";
+
 import ItemPrice from "./ItemPrice";
+import QuantitySelector from "./QuantitySelector";
 
 interface BundleItemProps {
-  item: {
-    itemKey: string;
-    productId: string;
-    variantId: string;
-    name: string;
-    image: string;
-    quantity: number;
-    originalPrice: number;
-    salePrice: number;
-  };
-  onIncrement: (productId: string, variantId: string) => void;
-  onDecrement: (productId: string, variantId: string) => void;
+  item: BundleSummaryItem;
+  onIncrement: (productId: ProductKey, variantId: BundleVariantKey) => void;
+  onDecrement: (productId: ProductKey, variantId: BundleVariantKey) => void;
 }
 
 export default function BundleItem({
@@ -35,7 +29,7 @@ export default function BundleItem({
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="truncate font-gilroy-medium text-[14px] leading-[16px] tracking-[0.005em] text-[#0B0D10]">
+        <p className="font-gilroy-medium text-[14px] leading-[16px] tracking-[0.005em] text-[#0B0D10] break-words">
           {item.name}
         </p>
       </div>

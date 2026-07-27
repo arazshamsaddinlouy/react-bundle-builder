@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { formatCurrency } from "../../utils/formatCurrency";
+import { formatCurrency } from "@/utils/formatCurrency";
 
 interface ShippingRowProps {
   shippingPrice: number;

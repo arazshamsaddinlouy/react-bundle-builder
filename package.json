@@ -1,16 +1,21 @@
 {
-  "name": "react-bundle-builder",
+  "name": "bundle-builder",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage",
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "preview": "vite preview",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "check": "yarn lint && yarn test:run && yarn build"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",

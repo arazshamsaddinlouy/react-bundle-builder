@@ -39,7 +39,7 @@ export default function BundleSummary({
 
   const totals = useMemo(() => calculateBundleTotals(sections), [sections]);
 
-  const shippingPrice = summary.shipping.price;
+  const shippingPrice = summary.shipping.compareAtPrice ?? 0;
   const installmentMonths = summary.financing.installmentCount;
 
   const savings = Math.max(0, totals.originalPrice - totals.salePrice);

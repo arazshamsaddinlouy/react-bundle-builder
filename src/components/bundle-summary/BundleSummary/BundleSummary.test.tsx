@@ -191,7 +191,7 @@ describe("BundleSummary", () => {
     shipping: {
       title: "Shipping",
       price: 5.99,
-      compareAtPrice: 9.99,
+      compareAtPrice: 5.99,
       image: "/images/shipping.png",
     },
     financing: {
@@ -314,10 +314,12 @@ describe("BundleSummary", () => {
     );
   });
 
-  it("passes the default shipping price to ShippingRow", () => {
+  it("passes the original shipping price to ShippingRow", () => {
     renderBundleSummary();
 
-    expect(screen.getByTestId("shipping-row-mobile")).toHaveTextContent("5.99");
+    const shippingRow = screen.getByTestId("shipping-row-mobile");
+
+    expect(shippingRow).toHaveTextContent("5.99");
   });
 
   it("passes a custom shipping price to ShippingRow", () => {
@@ -325,19 +327,19 @@ describe("BundleSummary", () => {
       ...summaryMock,
       shipping: {
         ...summaryMock.shipping,
-        price: 9.99,
+        price: 5.99,
       },
     });
 
-    expect(screen.getByTestId("shipping-row-mobile")).toHaveTextContent("9.99");
+    expect(screen.getByTestId("shipping-row-mobile")).toHaveTextContent("5.99");
   });
 
-  it("passes the shipping price to BundleSummaryFooter", () => {
+  it("passes the original shipping price to BundleSummaryFooter", () => {
     renderBundleSummary();
 
-    expect(screen.getByTestId("footer-shipping-price")).toHaveTextContent(
-      "5.99",
-    );
+    const shippingPrice = screen.getByTestId("footer-shipping-price");
+
+    expect(shippingPrice).toHaveTextContent("5.99");
   });
 
   it("passes calculated pricing values to BundleSummaryFooter", () => {

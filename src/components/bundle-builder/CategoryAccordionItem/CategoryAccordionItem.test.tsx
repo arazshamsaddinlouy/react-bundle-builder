@@ -105,12 +105,17 @@ describe("CategoryAccordionItem", () => {
     expect(onToggle).toHaveBeenCalledOnce();
   });
 
-  it("does not render category content when inactive", () => {
+  it("hides category content when inactive", () => {
     render(<CategoryAccordionItem {...defaultProps} isActive={false} />);
 
-    expect(screen.queryByRole("region")).not.toBeInTheDocument();
+    const region = screen.getByRole("region", {
+      hidden: true,
+    });
 
-    expect(screen.queryByTestId("product-list")).not.toBeInTheDocument();
+    expect(region).toHaveAttribute("id", "category-content-cameras");
+    expect(region).toHaveAttribute("aria-hidden", "true");
+
+    expect(screen.getByTestId("product-list")).toBeInTheDocument();
 
     expect(screen.queryByText(/selected/i)).not.toBeInTheDocument();
   });
@@ -125,6 +130,7 @@ describe("CategoryAccordionItem", () => {
       "aria-labelledby",
       "category-trigger-cameras",
     );
+    expect(region).toHaveAttribute("aria-hidden", "false");
 
     expect(screen.getByTestId("product-list")).toBeInTheDocument();
     expect(screen.getByText("Indoor Camera")).toBeInTheDocument();

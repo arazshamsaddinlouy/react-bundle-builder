@@ -100,28 +100,37 @@ export default function CategoryAccordionItem({
         </div>
       </button>
 
-      {isActive && (
-        <div
-          id={contentId}
-          role="region"
-          aria-labelledby={triggerId}
-          className="px-[15px] pb-[16px]"
-        >
-          <ProductList products={products} />
+      <div
+        id={contentId}
+        role="region"
+        aria-labelledby={triggerId}
+        aria-hidden={!isActive}
+        className={clsx(
+          "grid transition-[grid-template-rows,opacity] duration-300 ease-in-out",
+          isActive
+            ? "grid-rows-[1fr] opacity-100"
+            : "grid-rows-[0fr] opacity-0",
+        )}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <div className="px-[15px] pb-[16px]">
+            <ProductList products={products} />
 
-          {!isLastStep && (
-            <div className="mt-[16px] flex justify-center">
-              <button
-                type="button"
-                onClick={onNext}
-                className="flex h-[39px] items-center justify-center gap-[10px] rounded-[7px] border border-[#4E2FD2] px-[24px] py-[5px] font-gilroy-semibold text-[#4E2FD2] transition-colors hover:bg-[#4E2FD2] hover:text-white"
-              >
-                Next: {nextStepTitle ?? "Continue"}
-              </button>
-            </div>
-          )}
+            {!isLastStep && (
+              <div className="mt-[16px] flex justify-center">
+                <button
+                  type="button"
+                  onClick={onNext}
+                  tabIndex={isActive ? 0 : -1}
+                  className="flex h-[39px] items-center justify-center gap-[10px] rounded-[7px] border border-[#4E2FD2] px-[24px] py-[5px] font-gilroy-semibold text-[#4E2FD2] transition-colors hover:bg-[#4E2FD2] hover:text-white"
+                >
+                  Next: {nextStepTitle ?? "Continue"}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </article>
   );
 }

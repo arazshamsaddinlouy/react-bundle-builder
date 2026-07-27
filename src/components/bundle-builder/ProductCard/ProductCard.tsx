@@ -49,6 +49,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     productSelection?.quantities ?? {},
   ).some((variantQuantity) => (variantQuantity ?? 0) > 0);
 
+  const isActiveVariantSelected = quantity > 0;
+
   const handleIncreaseQuantity = () => {
     incrementQuantity(product.id, activeVariantId);
   };
@@ -60,10 +62,10 @@ export default function ProductCard({ product }: ProductCardProps) {
   const supportsQuantity = product.supportsQuantity !== false;
 
   const handleToggleSelection = () => {
-    if (isProductSelected) {
-      handleDecreaseQuantity();
+    if (isActiveVariantSelected) {
+      decrementQuantity(product.id, activeVariantId);
     } else {
-      handleIncreaseQuantity();
+      incrementQuantity(product.id, activeVariantId);
     }
   };
 
@@ -176,18 +178,18 @@ export default function ProductCard({ product }: ProductCardProps) {
                   type="button"
                   onClick={handleToggleSelection}
                   aria-label={
-                    isProductSelected
+                    isActiveVariantSelected
                       ? `Remove ${product.title} from bundle`
                       : `Add ${product.title} to bundle`
                   }
                   className={clsx(
                     "flex min-h-[28px] items-center justify-center rounded-[6px] px-[14px] font-gilroy-medium text-[12px] transition-colors",
-                    isProductSelected
+                    isActiveVariantSelected
                       ? "cursor-pointer bg-[#FEE2E2] text-[#DC2626] hover:bg-[#FECACA]"
                       : "cursor-pointer bg-[#4E2FD2] text-white hover:bg-[#4024BA]",
                   )}
                 >
-                  {isProductSelected ? "Remove" : "Add"}
+                  {isActiveVariantSelected ? "Remove" : "Add"}
                 </button>
               )}
 

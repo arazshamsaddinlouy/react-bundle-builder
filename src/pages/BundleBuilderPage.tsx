@@ -30,7 +30,7 @@ export default function BundleBuilderPage() {
     const hasSavedProducts = Object.values(savedBundle.selectedVariants).some(
       (selection) =>
         Object.values(selection?.quantities ?? {}).some(
-          (quantity) => quantity > 0,
+          (quantity) => (quantity ?? 0) > 0,
         ),
     );
 

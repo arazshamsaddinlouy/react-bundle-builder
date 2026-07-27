@@ -1,22 +1,12 @@
 import BundleItem from "./BundleItem";
 
+import type { BundleSummarySection, BundleVariantKey } from "@/types/bundle";
+import type { ProductKey } from "@/types/product";
+
 interface BundleSectionProps {
-  section: {
-    categoryId: string;
-    categoryTitle: string;
-    items: Array<{
-      itemKey: string;
-      productId: string;
-      variantId: string;
-      name: string;
-      image: string;
-      quantity: number;
-      originalPrice: number;
-      salePrice: number;
-    }>;
-  };
-  onIncrement: (productId: string, variantId: string) => void;
-  onDecrement: (productId: string, variantId: string) => void;
+  section: BundleSummarySection;
+  onIncrement: (productId: ProductKey, variantId: BundleVariantKey) => void;
+  onDecrement: (productId: ProductKey, variantId: BundleVariantKey) => void;
 }
 
 export default function BundleSection({
@@ -26,7 +16,7 @@ export default function BundleSection({
 }: BundleSectionProps) {
   return (
     <section>
-      <h3 className="mt-[10px] border-t border-[#CED6DE] py-[15px] font-gilroy-medium text-[12px] leading-[12px] tracking-[0.133em] text-[#484848] uppercase">
+      <h3 className="mt-[10px] border-t border-[#CED6DE] py-[15px] font-gilroy-medium text-[12px] leading-[12px] tracking-[0.133em] uppercase text-[#484848]">
         {section.categoryTitle}
       </h3>
 

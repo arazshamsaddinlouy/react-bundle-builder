@@ -56,12 +56,6 @@ export default function BundleSummary({
 
     const wasSaved = saveBundleToStorage({
       selectedVariants,
-      totals: {
-        originalPrice: totals.originalPrice,
-        salePrice: totals.salePrice,
-        savings,
-        itemsCount: totals.itemsCount,
-      },
       savedAt: new Date().toISOString(),
     });
 

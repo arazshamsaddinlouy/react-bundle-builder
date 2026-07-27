@@ -4,12 +4,6 @@ export const SAVED_BUNDLE_STORAGE_KEY = "saved-security-bundle";
 
 export interface SavedBundle {
   selectedVariants: SelectedVariants;
-  totals: {
-    originalPrice: number;
-    salePrice: number;
-    savings: number;
-    itemsCount: number;
-  };
   savedAt: string;
 }
 
@@ -23,6 +17,10 @@ export const saveBundleToStorage = (bundle: SavedBundle) => {
 
     return false;
   }
+};
+
+export const clearSavedBundleFromStorage = (): void => {
+  localStorage.removeItem(SAVED_BUNDLE_STORAGE_KEY);
 };
 
 export const getSavedBundleFromStorage = (): SavedBundle | null => {

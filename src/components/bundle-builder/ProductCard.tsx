@@ -3,9 +3,10 @@ import clsx from "clsx";
 
 import { DEFAULT_VARIANT_ID } from "@/constants/bundle";
 import { useBundleStore } from "@/store/useBundleStore";
+import type { BundleVariantKey } from "@/types/bundle";
 import type { Product } from "@/types/product";
 import type { ProductVariant } from "@/types/variant";
-import type { BundleVariantKey } from "@/types/bundle";
+import { formatCurrency } from "@/utils/formatCurrency";
 
 interface ProductCardProps {
   product: Product;
@@ -19,7 +20,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   );
 
   const setSelectedVariant = useBundleStore((state) => state.setActiveVariant);
+
   const incrementQuantity = useBundleStore((state) => state.incrementQuantity);
+
   const decrementQuantity = useBundleStore((state) => state.decrementQuantity);
 
   const hasVariants = Boolean(product.variants?.length);
@@ -31,7 +34,20 @@ export default function ProductCard({ product }: ProductCardProps) {
       DEFAULT_VARIANT_ID)
     : DEFAULT_VARIANT_ID;
 
+  const activeVariant = product.variants?.find(
+    (variant) => variant.id === activeVariantId,
+  );
+
+  const displayedPrice = activeVariant?.price ?? product.price;
+
+  const displayedCompareAtPrice =
+    activeVariant?.compareAtPrice ?? product.compareAtPrice;
+
   const quantity = productSelection?.quantities?.[activeVariantId] ?? 0;
+
+  const isProductSelected = Object.values(
+    productSelection?.quantities ?? {},
+  ).some((variantQuantity) => (variantQuantity ?? 0) > 0);
 
   const handleIncreaseQuantity = () => {
     incrementQuantity(product.id, activeVariantId);
@@ -40,11 +56,6 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleDecreaseQuantity = () => {
     decrementQuantity(product.id, activeVariantId);
   };
-
-  const isProductSelected = Object.values(
-    productSelection?.quantities ?? {},
-  ).some((variantQuantity) => variantQuantity > 0);
-
   return (
     <article
       className={clsx(
@@ -150,15 +161,15 @@ export default function ProductCard({ product }: ProductCardProps) {
               </div>
 
               <div className="flex flex-row items-center gap-[6px] leading-[20px] min-[1228px]:flex-col min-[1228px]:items-end min-[1228px]:gap-0">
-                {product.compareAtPrice &&
-                  product.compareAtPrice > product.price && (
+                {displayedCompareAtPrice &&
+                  displayedCompareAtPrice > displayedPrice && (
                     <span className="text-[16px] text-[#D8392B] line-through">
-                      ${product.compareAtPrice.toFixed(2)}
+                      {formatCurrency(displayedCompareAtPrice)}
                     </span>
                   )}
 
-                <span className="text-[#575757] text-[16px]">
-                  ${product.price.toFixed(2)}
+                <span className="text-[16px] text-[#575757]">
+                  {formatCurrency(displayedPrice)}
                 </span>
               </div>
             </div>

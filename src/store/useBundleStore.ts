@@ -12,7 +12,7 @@ import {
   cloneSelectedVariants,
   removeVariantFromSelection,
 } from "./bundleStore.utils";
-import { SAVED_BUNDLE_STORAGE_KEY } from "@/services/bundleStorageService";
+import { clearSavedBundleFromStorage } from "@/services/bundleStorageService";
 
 export const useBundleStore = create<BundleStore>((set) => ({
   selectedVariants: {},
@@ -102,7 +102,8 @@ export const useBundleStore = create<BundleStore>((set) => ({
   },
 
   clearBundle: () => {
-    localStorage.removeItem(SAVED_BUNDLE_STORAGE_KEY);
+    clearSavedBundleFromStorage();
+
     set({
       selectedVariants: {},
     });

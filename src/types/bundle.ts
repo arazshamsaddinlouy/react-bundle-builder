@@ -8,7 +8,7 @@ export type BundleVariantKey = VariantKey | DefaultVariantId;
 
 export interface ProductVariantSelection {
   activeVariantId: BundleVariantKey;
-  quantities: Record<BundleVariantKey, number>;
+  quantities: Partial<Record<BundleVariantKey, number>>;
 }
 
 export type SelectedVariants = Partial<

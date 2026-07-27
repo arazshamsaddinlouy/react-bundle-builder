@@ -1,10 +1,8 @@
-# Frontend Take-Home – Bundle Builder
+# Bundle Builder
 
-This project is my implementation of the Frontend Bundle Builder take-home assignment.
+This project is my solution for the Bundle Builder frontend coding challenge.
 
-The application allows users to build a customizable home security package by selecting products, changing variants, adjusting quantities, reviewing pricing in real time, and saving their progress for later.
-
----
+The application allows users to create a custom home security bundle by selecting products, choosing variants, changing quantities, and reviewing the order summary in real time. The selected bundle is also persisted in local storage so it can be restored after a page refresh.
 
 ## Tech Stack
 
@@ -16,43 +14,37 @@ The application allows users to build a customizable home security package by se
 - Tailwind CSS
 - Sonner
 
----
+## Running the Project
 
-## Getting Started
-
-### Install dependencies
+Install dependencies:
 
 ```bash
 yarn
 ```
 
-### Start development server
+Start the development server:
 
 ```bash
 yarn dev
 ```
 
-### Build for production
+Build the project:
 
 ```bash
 yarn build
 ```
 
-### Run lint
+Run ESLint:
 
 ```bash
 yarn lint
 ```
-
----
 
 ## Project Structure
 
 ```
 src
 ├── components
-│   ├── bundle-builder
-│   └── bundle-summary
 ├── constants
 ├── hooks
 ├── lib
@@ -63,107 +55,44 @@ src
 └── utils
 ```
 
-The project is organized by responsibility rather than feature size, making it easy to extend and maintain.
+The project is organized by responsibility. UI components, business logic, API services, state management and utility functions are separated to keep the codebase easier to maintain.
 
----
-
-## Main Features
+## Features
 
 - Multi-step bundle builder
 - Product variant selection
 - Quantity management
-- Live pricing updates
+- Real-time price updates
 - Discount calculation
-- Monthly installment calculation
+- Monthly payment calculation
 - Shipping summary
-- Bundle persistence using Local Storage
-- Restore previously saved bundle
+- Local storage persistence
+- Bundle restoration after refresh
 - Responsive layout
-- Type-safe implementation with TypeScript
-
----
 
 ## State Management
 
-Global application state is managed with Zustand.
+Zustand is used for global state management.
 
-The store is intentionally kept small and focused. It is responsible only for:
+The store only contains the data required to manage the bundle, including selected variants, active variants and product quantities. Pricing and summary calculations are handled separately to keep the store focused on state rather than business logic.
 
-- selected variants
-- active variants
-- quantity changes
-- restoring saved bundles
-- clearing bundle state
+## Data Layer
 
-Business calculations remain outside the store to keep state management predictable.
+Products are loaded through TanStack Query.
 
----
-
-## Data Fetching
-
-Products are loaded using TanStack Query.
-
-Although the project currently uses a local JSON file, the data layer was implemented as if it were consuming a real API. Replacing the mock endpoint with a backend service requires minimal changes.
-
----
+The current implementation uses a local JSON file, but the data layer is structured so it can be replaced with a real API without changing the UI components.
 
 ## Local Storage
 
-Users can save their bundle and restore it after refreshing the page.
+The application saves the current bundle automatically.
 
-Only the information required to rebuild the bundle is persisted:
+Only the information required to rebuild the bundle is stored:
 
-- selected variants
-- quantities
-- save timestamp
+- Selected variants
+- Product quantities
 
-Pricing is recalculated after restoration rather than trusted from storage.
-
----
-
-## Design Decisions
-
-A few implementation decisions were made intentionally:
-
-- Business logic is separated from presentation components.
-- Pricing calculations are extracted into reusable utility functions.
-- Formatting utilities are isolated from calculation utilities.
-- The data layer is separated from React components.
-- Components remain focused on rendering rather than calculations.
-- State updates avoid unnecessary mutations.
-- Product quantities are tracked per variant to preserve selections when switching between variants.
-
----
-
-## Assumptions
-
-Since this is a prototype:
-
-- Checkout only displays a confirmation message.
-- No payment flow is implemented.
-- Products are loaded from a mock endpoint.
-- Authentication is not required.
-
----
-
-## Future Improvements
-
-If this project were continued beyond the assignment, I would consider adding:
-
-- Unit tests
-- Integration tests
-- End-to-end testing
-- Error boundaries
-- Loading skeletons
-- Better accessibility coverage
-- Animations for bundle updates
-- Backend integration
-- Internationalization
-
----
+Prices and totals are recalculated when the bundle is restored.
 
 ## Notes
 
-The goal of this implementation was not only to complete the requested functionality, but also to keep the codebase maintainable and easy to evolve.
-
-Where possible, responsibilities have been separated, reusable logic extracted, and state kept minimal so future features can be added without significant refactoring.
+The main goal of this implementation was to keep the code modular and easy to extend. Components are focused on rendering, calculations are extracted into reusable utilities, and business logic is separated from the UI wherever possible.

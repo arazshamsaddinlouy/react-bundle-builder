@@ -7,7 +7,7 @@ export interface SavedBundle {
   savedAt: string;
 }
 
-export const saveBundleToStorage = (bundle: SavedBundle) => {
+export const saveBundleToStorage = (bundle: SavedBundle): boolean => {
   try {
     localStorage.setItem(SAVED_BUNDLE_STORAGE_KEY, JSON.stringify(bundle));
 

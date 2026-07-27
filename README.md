@@ -84,7 +84,7 @@ The current implementation uses a local JSON file, but the data layer is structu
 
 ## Local Storage
 
-The application saves the current bundle automatically.
+The application allows the current bundle to be saved and restored using Local Storage.
 
 Only the information required to rebuild the bundle is stored:
 

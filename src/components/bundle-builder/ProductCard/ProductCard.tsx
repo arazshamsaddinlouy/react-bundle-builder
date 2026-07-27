@@ -59,6 +59,14 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const supportsQuantity = product.supportsQuantity !== false;
 
+  const handleToggleSelection = () => {
+    if (isProductSelected) {
+      handleDecreaseQuantity();
+    } else {
+      handleIncreaseQuantity();
+    }
+  };
+
   return (
     <article
       className={clsx(
@@ -166,17 +174,20 @@ export default function ProductCard({ product }: ProductCardProps) {
               ) : (
                 <button
                   type="button"
-                  onClick={handleIncreaseQuantity}
-                  disabled={isProductSelected}
-                  aria-label={`Add ${product.title} to bundle`}
+                  onClick={handleToggleSelection}
+                  aria-label={
+                    isProductSelected
+                      ? `Remove ${product.title} from bundle`
+                      : `Add ${product.title} to bundle`
+                  }
                   className={clsx(
                     "flex min-h-[28px] items-center justify-center rounded-[6px] px-[14px] font-gilroy-medium text-[12px] transition-colors",
                     isProductSelected
-                      ? "cursor-not-allowed bg-[#ECEFF3] text-[#A5ADB7]"
+                      ? "cursor-pointer bg-[#FEE2E2] text-[#DC2626] hover:bg-[#FECACA]"
                       : "cursor-pointer bg-[#4E2FD2] text-white hover:bg-[#4024BA]",
                   )}
                 >
-                  {isProductSelected ? "Added ✓" : "Add"}
+                  {isProductSelected ? "Remove" : "Add"}
                 </button>
               )}
 
